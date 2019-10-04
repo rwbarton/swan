@@ -1,0 +1,12 @@
+Let X be a topological space and t₁, ..., tᵣ : X → ℝⁿ continuous maps. Prove that if t₁, ..., tᵣ are linearly independent at some x ∈ X, the same holds in a neighborhood of x.
+
+We may as well take X = ℝⁿ, so the statement becomes: the subspace of (ℝⁿ)ʳ consisting of linearly independent r-tuples is open. The proof is that the linearly independent r-tuples are those for which some r × r determinant is nonzero, and the determinant is a continuous function.
+
+Let X be a topological space and f : X × ℝᵐ → ℝⁿ be a continuous map such that each f(x, -) is linear. Define K : X → ℕ and I : X → ℕ by
+
+K(x) = dim(ker f(x, -))
+I(x) = dim(im f(x, -))
+
+Prove that K is upper semicontinuous and I is lower semicontinuous. (These concepts of semicontinuity aren't in mathlib yet--hopefully they can be defined in terms of filters somehow.)
+
+Since K(x) + I(x) = m, it suffices to prove that I(x) is lower semicontinuous. Take x ∈ X and let r = I(x). Choose r vectors s₁, ..., sᵣ in ℝᵐ such that f(x, s₁), ..., f(x, sᵣ) form a basis of im f(x, -). Then in particular, the f(x, sᵢ) are linearly independent. Define tᵢ : X → ℝⁿ by tᵢ = f(-, sᵢ). Then the previous result shows that the tᵢ(y) are linearly independent for y in some neighborhood of x, so in this neighborhood I(y) ≥ r = I(x).

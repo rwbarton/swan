@@ -16,3 +16,5 @@ src/scratch.lean
 /swan-notes/swan-notes.log
 /swan-notes/swan-notes.out
 /swan-notes/swan-notes.pdf
+*.bbl
+*.blg

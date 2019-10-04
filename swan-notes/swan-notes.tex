@@ -13,9 +13,43 @@
 \usepackage{fixltx2e}
 \usepackage{tcolorbox}
 \usepackage{listings}
-\usepackage{jmhmacros}
 
-\graphicspath{ {/home/pv/Pictures/latex/} }
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\remph}[1]{\textcolor{red}{#1}}
+\newcommand{\TODO}{\remph{TODO}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\Vect}{\operatorname{Vect}}
+\newcommand{\fgProj}{\operatorname{fgProj}}
+\newcommand{\Shv}{\operatorname{Shv}}
+
+\theoremstyle{plain}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}{Theorem}[section]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+
+\bibliographystyle{plainurl}
+
+\usepackage{color}
+\definecolor{keywordcolor}{rgb}{0.7, 0.1, 0.1}   % red
+\definecolor{tacticcolor}{rgb}{0.1, 0.2, 0.6}    % blue
+\definecolor{commentcolor}{rgb}{0.4, 0.4, 0.4}   % grey
+\definecolor{symbolcolor}{rgb}{0.0, 0.1, 0.6}    % blue
+\definecolor{sortcolor}{rgb}{0.1, 0.5, 0.1}      % green
+\definecolor{attributecolor}{rgb}{0.7, 0.1, 0.1} % red
+
+\usepackage{listings}
+\def\lstlanguagefiles{lstlean.tex}
+\lstset{language=lean,breakatwhitespace,xleftmargin=0pt, basicstyle=\ttfamily\small}
+\usepackage{stmaryrd}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\lil}{\lstinline}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\CH}{\mathsf{CH}}
 
 \begin{document}
 
@@ -31,14 +65,134 @@ We give an account of Swan's theorem characterizing vector bundles over a compac
 
 \section*{Introduction}
 % TODO
+
 \section{Vector bundles}
+For the rest of this document, we fix a compact Hausdorff space \(X\).
+% TODO: rephrase in terms of fiber functions
+\begin{definition}
+
+\label{def-vector-bundle}
+ A (real) \textbf{vector bundle over \(X\)} comprises the following data:
+  \begin{enumerate}[label={(\roman*)}]
+  \item A topological space \(E\), called the \textbf{total space},
+  \item a map of topological spaces \(E \overset{p}{\to} X\),
+  \item on every \emph{fiber} \(E_x := p^{-1}(x)\), the structure of an \(\R\)-vector space on \(E_x\), and
+  \item for every \(x : X\), an open neighborhood \(x \in U_x \subseteq X\), an \(n_x : \N\), and a homeomorphism \(\Phi_x : U_x \times \R^{n_x} \to p^{-1}(U)\),
+  \end{enumerate}
+
+  satisfying the following properties:
+\begin{enumerate}[label={(\alph*)}]
+  \item For every \(x : X\), the dimension of the vector space \(E_x\) is finite,
+  \item \label{local-triviality} for every \(x : X\), \(\Phi_x\) is linear on every fiber, and satisfies \(p \circ \Phi_x = (\pi_1 : U_x \times \R^{n_x} \twoheadrightarrow U_x)\).
+\end{enumerate}  
+\end{definition}
+
+\begin{example}\label{example-trivial-bundle}
+  The property \ref{local-triviality} is called \textbf{local triviality}. Accordingly, for every \(n : \N\), we define the \textbf{trivial bundle} of rank \(n\) to be
+  \[
+    X \times \R^n \overset{\pi_1}{\twoheadrightarrow} X.
+  \]
+\end{example}
+
+\begin{example}\label{example-tangent-bundle}
+  Suppose that \(X\) additionally has the structure of a smooth manifold. The \textbf{tangent bundle} of \(X\) is defined as follows: the total space is sigma-type of all tangent spaces at all points of \(X\).
+
+  \TODO(jesse): describe the topology, smooth structure, etc.
+\end{example}
+
+\begin{definition}\label{def-rank}
+  Let \(E \overset{p}{\to} X\) be a vector bundle. Let \(x : X\). The \textbf{rank of \(E\) at \(x\)} is the dimension of the vector space \(E_x\).
+\end{definition}
+
+\begin{lemma}\label{lemma-rank-locally-constant}
+  Rank is a locally constant function. That is, for every \(x : X\), there is a neighborhood \(V_{x}\) of \(x\) such that the rank of \(E\) is constant on \(V_x\).
+\end{lemma}
+
+\begin{proof}
+  \TODO(jesse).
+\end{proof}
+
+\begin{definition} \label{def-vector-bundle-homomorphism}
+  Let \(E_1 \overset{p_1}{\to} X\) and \(E_2 \overset{p_2}{\to} X\) be vector bundles over \(X\).
+  A \textbf{vector bundle morphism} is a map \(f : E_1 \to E_2\) over \(X\) such that for every \(x : X\), \(E_{1,x} \overset{f}{\to} E_{2,f(x)}\) is also a map of vector spaces.
+\end{definition}
+
+\begin{definition} \label{def-category-vector-bundles}
+  We define \(\Vect(X)\), the category of vector bundles over \(X\), to be the category whose objects are the vector bundles over \(X\) and whose morphisms are the vector bundle morphisms.
+\end{definition}
 
 \section{Projective modules}
+Throughout this section, we fix a commutative ring \(R\).
 
-\section{Kaplansky's theorem on projective modules over local rings}
+\begin{definition}[\cite{nlab:projective_module}]\label{def-projective}
+  Let \(M\) be an \(R\)-module. \(M\) is projective if it satisfies any of the following properties:
+
+  \begin{enumerate}
+  \item\label{projective-lifting} For any \(A, B\), \(f : M \to B\) and \(g : A \twoheadrightarrow B\), there exists a lift \(\widetilde{f}\):
+    \[
+      \begin{tikzcd}
+        & A \arrow{d}{g}\\
+        M \arrow[dashed]{ur}{\widetilde{f}}\arrow[swap]{r}{f}& B
+      \end{tikzcd}
+    \]
+  \item \label{projective-free-summand} \(M\) is a direct summand of a free module.
+
+    \item \label{projective-split} Every short exact sequence \(0 \to A \to B \to M \to 0\) is split.
+
+    \item \label{projective-hom-exact} The covariant hom-functor \(\Hom_{R\text{-Mod}}(M, -)\) is exact.
+  \end{enumerate}
+\end{definition}
+
+\begin{lemma}\label{lemma-projective-equivalent}
+  The properties \ref{projective-lifting}, \ref{projective-free-summand}, \ref{projective-split}, and \ref{projective-hom-exact} are equivalent.
+\end{lemma}
+\begin{proof}
+  \TODO(jesse).
+\end{proof}
+
+\begin{lemma} \label{lemma-fg-projective-idempotent}
+  Let \(M\) be a finitely-generated projective \(R\)-module . Then there exists an \(n\) and an idempotent \(e : \Mat_n(R)\) such that \(M \simeq e(R^n)\).
+\end{lemma}
+
+\begin{proof}
+  \TODO(jesse).
+\end{proof}
+
+\begin{definition} \label{def-category-projective-modules}
+  We define \(\fgProj(R)\) to be the full subcategory of \(R\text{-Mod}\) on the finitely-generated projective \(R\)-modules.
+\end{definition}
 
 \section{Swan's theorem}
 
-\section{Swan's theorem as the internalization of Kaplansky's theorem}
+\begin{theorem}[Swan, \cite{swan1962vector}]
+  There is an equivalence of categories
+  \[\Vect(X) \simeq \fgProj(X).\]
+\end{theorem}
+
+\begin{proof}
+  \TODO(jesse)
+\end{proof}
+
+\section{Kaplansky's theorem on projective modules over local rings}
+
+\begin{definition}\label{def-local-ring}
+  Let \(R\) be a commutative ring. \(R\) is \textbf{local} if it has a unique maximal ideal.
+\end{definition}
+
+\begin{definition}\label{def-free-module}
+  Let \(R\) be a commutative ring. Let \(M\) be an \(R\)-module. \(M\) is \textbf{free} if \(M\) has a basis; equivalently, if \(M\) is isomorphic to a direct sum of copies of \(R\).
+\end{definition}
+
+\begin{theorem}[Kaplansky]\label{thm-kaplansky}
+  Let \(R\) be a local ring, and let \(M\) be a projective module over \(R\). Then \(M\) is free.
+\end{theorem}
+
+\begin{proof}
+  \TODO(jesse)
+\end{proof}
+
+\section{Internalizing Kaplansky's theorem to \(\Shv(X)\)}
+
+\bibliography{swan-notes}
 
 \end{document}

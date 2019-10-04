@@ -1,0 +1,6 @@
+* Things not in ~mathlib~ yet
+ - Projective modules
+ - Characterizations of projective modules
+ - Identification of finitely-generated projective modules with idempotents of matrix rings
+ - Möbius band
+ - Concrete examples of topological manifolds(?)
