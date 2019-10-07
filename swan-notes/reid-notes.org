@@ -1,3 +1,4 @@
+* Simplified version of Lemma 1
 Let X be a topological space and t₁, ..., tᵣ : X → ℝⁿ continuous maps. Prove that if t₁, ..., tᵣ are linearly independent at some x ∈ X, the same holds in a neighborhood of x.
 
 We may as well take X = ℝⁿ, so the statement becomes: the subspace of (ℝⁿ)ʳ consisting of linearly independent r-tuples is open. The proof is that the linearly independent r-tuples are those for which some r × r determinant is nonzero, and the determinant is a continuous function.
@@ -10,3 +11,25 @@ I(x) = dim(im f(x, -))
 Prove that K is upper semicontinuous and I is lower semicontinuous. (These concepts of semicontinuity aren't in mathlib yet--hopefully they can be defined in terms of filters somehow.)
 
 Since K(x) + I(x) = m, it suffices to prove that I(x) is lower semicontinuous. Take x ∈ X and let r = I(x). Choose r vectors s₁, ..., sᵣ in ℝᵐ such that f(x, s₁), ..., f(x, sᵣ) form a basis of im f(x, -). Then in particular, the f(x, sᵢ) are linearly independent. Define tᵢ : X → ℝⁿ by tᵢ = f(-, sᵢ). Then the previous result shows that the tᵢ(y) are linearly independent for y in some neighborhood of x, so in this neighborhood I(y) ≥ r = I(x).
+
+* Notes from Oct 7
+Goal: prove Lemma 1 from Swan's original paper as a stress test.
+
+The proof of Lemma 1 relies on the following fact: given an n × k matrix, the columns are linearly independent if and only if there is a k × k submatrix whose determinant is nonzero.
+
+We also need to conclude that the determinant is continuous. To do this, we take ~det~, which is a function on matrices, and define a multivariate polynomial ~Det~ whose evaluation we prove is equal to det, then prove that any ~mv_polynomial~ is continuous.
+
+We should also be able to prove, at least, that an n × n matrix is invertible iff its columns are linearly independent iff its determinant is nonzero.
+
+To do this, we should:
+ - characterize the determinant as a multilinear alternating function
+
+ - more generally, provide an API that hides the Leibniz permutation formula
+   - det(P_{σ}) = sgn (σ)
+   - det is a multilinear function of the columns
+   - det is an alternating function of the columns
+     - Note: this might be a little annoying to state, because matrices are defined as function types ~n → m → R~ where ~n,m~ are ~fintypes~
+   - det is the unique alternating multilinear function such that det(id) = 1.
+   - Generalize the existing lemma ~det_diagonal~ to ~det_upper_tri~
+
+ - Show that det is alternating over any ring where 2 is not a zero-divisor.
