@@ -22,6 +22,12 @@
 \newcommand{\Vect}{\operatorname{Vect}}
 \newcommand{\fgProj}{\operatorname{fgProj}}
 \newcommand{\Shv}{\operatorname{Shv}}
+\newcommand{\RHom}[3]{\Hom_{{#1}\text{-Mod}}({#2}, {#3})}
+\newcommand{\im}{\operatorname{im}}
+\renewcommand{\ker}{\operatorname{ker}}
+\mathchardef\mhyphen="2D
+\newcommand{\Mod}{\mhyphen\operatorname{Mod}}
+\newcommand{\wt}{\widetilde}
 
 \theoremstyle{plain}
 \newtheorem{lemma}{Lemma}[section]
@@ -48,8 +54,6 @@
 \newcommand{\B}{\mathbb{B}}
 \newcommand{\lil}{\lstinline}
 \newcommand{\N}{\mathbb{N}}
-\newcommand{\ZFC}{\mathsf{ZFC}}
-\newcommand{\CH}{\mathsf{CH}}
 
 \begin{document}
 
@@ -121,17 +125,71 @@ For the rest of this document, we fix a compact Hausdorff space \(X\).
   We define \(\Vect(X)\), the category of vector bundles over \(X\), to be the category whose objects are the vector bundles over \(X\) and whose morphisms are the vector bundle morphisms.
 \end{definition}
 
+\begin{definition}\label{def-global-sections}
+  Let \(E \overset{p}{\to} X\) be a vector bundle over \(X\). The \textbf{global sections} of \(E\) are the set of continuous right-inverses to \(p\).
+\end{definition}
+
+\begin{definition}\label{def-global-sections-functor}
+  More generally, we define the \textbf{global sections functor}
+  \[\Gamma : \Vect(X) \to \R\Mod\]
+  as follows:
+  \TODO(jesse)
+\end{definition}
+
 \section{Projective modules}
 Throughout this section, we fix a commutative ring \(R\).
 
-\begin{definition}[\cite{nlab:projective_module}]\label{def-projective}
+\begin{definition} \label{def-left-exact}
+  Let \(R\) and \(S\) be rings. We say that a functor \(F : R\Mod \to S\Mod\) is \textbf{left-exact} if it preserves \(0\) and direct sums, and for every short exact sequence \(0 \to A \overset{f_1}{\to} B \overset{f_2}{\to} C \to 0\) in \(R\Mod\),
+  \[0 \to F(A) \overset{F(f_1)}{\to} F(B) \overset{F(f_2)}{\to} F(C)\]
+  is a short exact sequence in \(S\Mod\)
+\end{definition}
+
+\begin{definition} \label{def-right-exact}
+  Let \(R\) and \(S\) be rings. We say that a functor \(F : R\Mod \to S\Mod\) is \textbf{left-exact} if it preserves \(0\) and direct sums, and for every short exact sequence \(0 \to A \overset{f_1}{\to} B \overset{f_2}{\to} C \to 0\) in \(R\Mod\),
+  \[F(A) \overset{F(f_1)}{\to} F(B) \overset{F(f_2)}{\to} F(C) \to 0\]
+  is a short exact sequence in \(S\Mod\).
+\end{definition}
+
+\begin{lemma}\label{lemma-left-exact-finite-limits}
+  \(F : R\Mod \to S\Mod\) is left exact if and only if \(F\) preserves finite limits.
+\end{lemma}
+
+\begin{lemma}\label{lemma-right-exact-finite-limits}
+  \(F : R\Mod \to S\Mod\) is right exact if and only if \(F\) preserves finite colimits.
+\end{lemma}
+
+\begin{lemma}\label{lemma-covariant-hom-left-exact}
+  Let \(M\) be an \(R\)-module. Then the covariant hom-functor \(\RHom{R}{M}{-}\) is left-exact.
+\end{lemma}
+
+\begin{proof}
+  We need to show that for every exact sequence \(0 \to A \overset{f_1}{\to} B \overset{f_2}{\to} C \to 0\),
+  \[0 \to \RHom{R}{M}{A} \overset{f_1 \circ -}{\to} \RHom{R}{M}{B} \overset{f_2 \circ -}{\to} \RHom{R}{M}{C}\]
+  is exact.
+
+  That is, we need to show that
+  \begin{enumerate}
+  \item \label{lemma-covariant-hom-left-exact-1}\(f_1 \circ -\) is injective.
+  \item \label{lemma-covariant-hom-left-exact-2} \(\im(f_1 \circ -) = \ker(f_2 \circ -)\).
+  \end{enumerate}
+
+First, we prove  \ref{lemma-covariant-hom-left-exact-1}.
+    Let \(g_1, g_2 : M \to A\) such that \(f_1 \circ g_1 = f_1 \circ g_2\). By assumption on \(f_1\), \(f_1\) is injective, so it follows that \(g_1 = g_2\).
+
+Now we prove \ref{lemma-covariant-hom-left-exact-2}.
+    Let \(g : M \to A\). Then \(f_2 \circ f_1 \circ g : M \to C\) is zero because \(f_2 \circ f_1\) is zero, which shows that \(\im(f_1 \circ -) \subseteq \ker(f_2 \circ -)\). For the other inclusion, let \(h : M \to B\)  such that \(f_2 \circ h = 0\). It suffices to exhibit a \(g : M \to A\) such that \(f_1 \circ g = h\). We define \(g\) pointwise. Fix \(m \in M\). Since \(f_2 \circ h = 0\), we have that \(\im(h) \subseteq \ker(f_2)\). By assumption on \(f_2\), \(\ker(f_2) = \im(f_1)\), so \(\im(h) \subseteq \im(f_1)\). That is, there exists some \(a \in A\) such that \(h(m) = f_1(a)\). We define \(g(m) = a\). Since \(f_1\) is injective, this function is well-defined and is easily checked to be an \(R\)-module homomorphism.
+
+  \end{proof}
+
+  \begin{definition}[\cite{nlab:projective_module}]\label{def-projective}
   Let \(M\) be an \(R\)-module. \(M\) is projective if it satisfies any of the following properties:
 
   \begin{enumerate}
   \item\label{projective-lifting} For any \(A, B\), \(f : M \to B\) and \(g : A \twoheadrightarrow B\), there exists a lift \(\widetilde{f}\):
     \[
       \begin{tikzcd}
-        & A \arrow{d}{g}\\
+        & A \arrow[two heads]{d}{g}\\
         M \arrow[dashed]{ur}{\widetilde{f}}\arrow[swap]{r}{f}& B
       \end{tikzcd}
     \]
@@ -147,7 +205,16 @@ Throughout this section, we fix a commutative ring \(R\).
   The properties \ref{projective-lifting}, \ref{projective-free-summand}, \ref{projective-split}, and \ref{projective-hom-exact} are equivalent.
 \end{lemma}
 \begin{proof}
-  \TODO(jesse).
+  \begin{itemize}
+  \item (\ref{projective-lifting} \(\implies\) \ref{projective-hom-exact})
+    Let \(0 \to A \overset{f_1}{\to} B \overset{f_2}{\to} C \to 0\) be an exact sequence. We need to show that the following sequence is also exact:
+    \[0 \to \RHom{R}{M}{A} \overset{f_1 \circ -}{\to} \RHom{R}{M}{B} \overset{f_2 \circ -}{\to} \RHom{R}{M}{C} \to 0.\]
+    Left-exactness is exactly the conclusion of \ref{lemma-covariant-hom-left-exact}.
+
+    To show right-exactness, it suffices to show that \(f_2 \circ -\) is surjective. Fix \(h : M \to C\). By assumption, \(f_2\) is surjective. Then we are in the situation of \ref{projective-lifting}, so there exists a lift \(\wt{h} : M \to B\) of \(h\) along \(f_2\) such that \(f_2 \circ \wt{h} = h\).
+
+  \item \TODO(jesse)
+  \end{itemize}
 \end{proof}
 
 \begin{lemma} \label{lemma-fg-projective-idempotent}
@@ -164,9 +231,10 @@ Throughout this section, we fix a commutative ring \(R\).
 
 \section{Swan's theorem}
 
+%TODO(jesse): maybe explicit construct and name the inverse functor?
 \begin{theorem}[Swan, \cite{swan1962vector}]
-  There is an equivalence of categories
-  \[\Vect(X) \simeq \fgProj(X).\]
+  The global sections functions induces an equivalence of categories
+  \[\Gamma : \Vect(X) \overset{\sim}{\longrightarrow} \fgProj(X).\]
 \end{theorem}
 
 \begin{proof}
