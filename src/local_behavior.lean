@@ -63,6 +63,20 @@ from_finset
 
 end Det
 
+section Det₂
+
+open_locale classical
+
+open equiv equiv.perm finsupp
+variables {α : Type u} [comm_ring α] {σ : Type w} [fintype σ]
+
+def indeterminate_matrix : matrix σ σ $ mv_polynomial (σ × σ) α :=
+λ i j, mv_polynomial.X (i, j)
+
+def Det₂ : mv_polynomial (σ × σ) α := det indeterminate_matrix
+
+end Det₂
+
 end matrix
 
 
