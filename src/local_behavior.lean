@@ -63,33 +63,6 @@ end equiv.perm
 
 namespace matrix
 
-section Det
-
-open_locale classical
-
-open equiv equiv.perm finsupp
-variables {α : Type u} [comm_ring α] {σ : Type w} [fintype σ]
-
-def indeterminate_matrix : matrix σ σ $ mv_polynomial (σ × σ) α :=
-λ i j, mv_polynomial.X (i, j)
-
-def Det : mv_polynomial (σ × σ) α := det indeterminate_matrix
-
-def valuation_of_matrix (M : matrix σ σ α) : σ × σ → α :=
-λ ⟨i,j⟩, M i j
-
--- TODO: characterize Det.support
-lemma Det_eval (M : matrix σ σ α) : Det.eval (λ ⟨i,j⟩, M i j) = det M :=
-begin
-  unfold det, unfold mv_polynomial.eval mv_polynomial.eval₂ finsupp.sum,
-  refine finset.sum_congr₂ _ _ _,
-    { sorry },
-    { sorry },
-    { sorry }
-end
-
-end Det
-
 section Det₂
 
 open_locale classical
