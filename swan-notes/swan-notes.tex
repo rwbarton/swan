@@ -136,6 +136,22 @@ For the rest of this document, we fix a compact Hausdorff space \(X\).
   \TODO(jesse)
 \end{definition}
 
+\begin{lemma}[\cite{swan1962vector}, Lemma 1]\label{lemma-1}
+  Let \(x \in X\). Let \(E \overset{p}{\to} X\) be a vector bundle, and let \(t_1, \dots, t_k\) be sections of \(E\) over a neighborhood \(U \ni x\) such that \(t_1(x), \dots, t_k(x)\) are linearly independent.
+
+  Then there is a neighborhood \(V \ni x\) such that for all \(y \in V\), \(t_1(y), \dots, t_k(y)\) are linearly independent.
+\end{lemma}
+
+\begin{proof}
+  Without loss of generality, we may assume that \(U\) trivializes \(E\) at \(x\), and thus that we are in the situation of having continuous functions
+  \[s_1, \dots, s_k : U \to \R^n\]
+  such that \(s_1(x), \dots, s_k(x)\) are linearly independent.
+  
+  We identify \((s_1(x), \dots, s_k(x))\) with a linear transformation \(f_x : \R^k \to \R^n\). It suffices to show that there is a neighborhood \(V\) of \(x\) such that \(\mathbf{s} := (x \mapsto f_x)\) (which we claim is continuous) is injective on \(V\). Indeed, since \(f_x\) is continuous, there exists some left-inverse \(g\) of \(f_x\). Since the map
+  \[(h \mapsto gh) : \Hom(\R^k, \R^n) \to \R\]
+  is continuous, there exists a neighborhood \(V_0\) of \(f_x\) such that for every \(h \in V_0\), \(h\) is injective. Then we can take \(V = \mathbf{s}^{-1}(V_0)\).
+\end{proof}
+
 \section{Projective modules}
 Throughout this section, we fix a commutative ring \(R\).
 
@@ -213,6 +229,7 @@ Now we prove \ref{lemma-covariant-hom-left-exact-2}.
 
     To show right-exactness, it suffices to show that \(f_2 \circ -\) is surjective. Fix \(h : M \to C\). By assumption, \(f_2\) is surjective. Then we are in the situation of \ref{projective-lifting}, so there exists a lift \(\wt{h} : M \to B\) of \(h\) along \(f_2\) such that \(f_2 \circ \wt{h} = h\).
 
+    \item (\ref{projective-lifting} \(\implies\) \ref{projective-split}) Suppose that \(0 \to A \to B \overset{f}{\to} M \to 0\) is exact. Then \(f\) is an epimorphism, so there exists a lift \(g\) of the identity \(\operatorname{id} : M \to M\) along the surjection \(f\), such that \(f \circ g = \operatorname{id}\), so the sequence is split.
   \item \TODO(jesse)
   \end{itemize}
 \end{proof}

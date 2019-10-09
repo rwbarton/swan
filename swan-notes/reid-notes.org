@@ -29,7 +29,15 @@ To do this, we should:
    - det is a multilinear function of the columns
    - det is an alternating function of the columns
      - Note: this might be a little annoying to state, because matrices are defined as function types ~n → m → R~ where ~n,m~ are ~fintypes~
+     - Note: proving this will actually be quite easy. Compare the proof of `det_mul_aux` which is the same kind of pairing argument.
    - det is the unique alternating multilinear function such that det(id) = 1.
    - Generalize the existing lemma ~det_diagonal~ to ~det_upper_tri~
 
  - Show that det is alternating over any ring where 2 is not a zero-divisor.
+*** Addendum
+Actually, the fact that an n x k matrix with k linearly independent columns also has some k linearly independent rows ("fact 3") is not needed. It's enough that there is some linear transformation which preserves the linear independence.
+
+Note that if linear map $$f : R^k \to R^n$$ is injective, then there is some linear map $$g : R^n \to R^k$$ such that $$gf$$ is also injective. (This doesn't even require finite dimensionality.)
+
+Now let's prove using this that injectivity of $$f : R^k \to R^n$$ is an open condition. If $$f$$ is injective, choose some $$g$$ as above. Then $$\det (gf) \ne 0$$. The function sending $$h : R^k \to R^n$$ to $$\det (gh)$$ is continuous, so $$\det (gh) \ne 0$$ for all $$h$$ in some neighborhood of $$f$$. So $$gh$$ is injective for all such $$h$$, and therefore $$h$$ is as well.
+
