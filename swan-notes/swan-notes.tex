@@ -28,6 +28,7 @@
 \mathchardef\mhyphen="2D
 \newcommand{\Mod}{\mhyphen\operatorname{Mod}}
 \newcommand{\wt}{\widetilde}
+\newcommand{\id}{\operatorname{id}}
 
 \theoremstyle{plain}
 \newtheorem{lemma}{Lemma}[section]
@@ -142,8 +143,26 @@ For the rest of this document, we fix a compact Hausdorff space \(X\). \(C(X)\) 
   as follows:
   \begin{itemize}
   \item On an object \((E,p)\), \(\Gamma((E,p))\) is the module of global sections of \((E,p)\), and
-    \item On a map \(f : (E,p) \to (E',p')\), \(\Gamma(f) : \Gamma((E,p)) \to \Gamma((E',p'))\) is the map which sends a global section \(X \overset{\sigma}{\to} E\) to the global section \(X \overset{\sigma}{\to} E \overset{f}{\to} E'\)
-  \end{itemize}
+    \item On a map \(f : (E,p) \to (E',p')\), \(\Gamma(f) : \Gamma((E,p)) \to \Gamma((E',p'))\) is the map which sends a global section \(X \overset{\sigma}{\to} E\) to the global section \(X \overset{\sigma}{\to} E \overset{f}{\to} E'\).
+    \end{itemize}
+
+    \begin{proof}[\(\Gamma\) is functorial]
+      We need to verify that \(\Gamma(\id) = \id\) and that for all vector bundle morphisms \(f,g\), \(\Gamma(g \circ f) = \Gamma(f) \circ \Gamma(g)\).
+      \begin{itemize}
+      \item If \((E,p) \to (E,p)\) is the identity of \((E,p)\), then for every global section \(\sigma : X \to E\) of \((E,p)\), \(\Gamma(\id)(\sigma) = \id \circ \sigma = \sigma\), so \(\Gamma\) is equal to \(\id\).
+
+        \item If \((E,p) \overset{f}{\to} (E',p') \overset{g}{\to} (E'', p'')\) is a composition of vector bundle maps, then we see that for an arbitrary section \(\sigma : X \to E\), \(\Gamma(g \circ f)(\sigma) = g \circ f \circ \sigma = \Gamma(g)(\Gamma(f)(\sigma))\).
+      \end{itemize}
+    \end{proof}
+
+    \begin{proof}[For every vector bundle map \(f : (E,p) \to (E',p')\), \(\Gamma(f)\) is \(C(X)\)-linear]
+      We need to verify that \(\Gamma(f)\) is additive and that \(\Gamma(f)\) is \(C(X)\)-equivariant.
+      \begin{itemize}
+      \item Let \(\sigma_1, \sigma_2 : X \to E\) be global sections. Then
+        \[\Gamma(f)(\sigma_1 + \sigma_2) = f \circ (\sigma_1 + \sigma_2) = \lambda x, f(\sigma_1 + \sigma_2)(x) = \lambda x, f(\sigma_1(x) + \sigma_2(x))\]\[ = \lambda x, f(\sigma_1(x)) + f(\sigma_2(x)) = \Gamma(f)(\sigma_1) + \Gamma(f)(\sigma_2).\]
+        \item Let \(c \in C(X)\). Then \[\Gamma(f)(c \cdot \sigma) = \lambda x, f \circ (c(x) \cdot \sigma(x)) = c(x) \cdot (f(\sigma(x))) = c \cdot \Gamma(\sigma).\]
+      \end{itemize}
+    \end{proof}
   
 \end{definition}
 
