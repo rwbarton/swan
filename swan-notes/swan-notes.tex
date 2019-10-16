@@ -252,8 +252,41 @@ Now we prove \ref{lemma-covariant-hom-left-exact-2}.
     To show right-exactness, it suffices to show that \(f_2 \circ -\) is surjective. Fix \(h : M \to C\). By assumption, \(f_2\) is surjective. Then we are in the situation of \ref{projective-lifting}, so there exists a lift \(\wt{h} : M \to B\) of \(h\) along \(f_2\) such that \(f_2 \circ \wt{h} = h\).
 
     \item (\ref{projective-lifting} \(\implies\) \ref{projective-split}) Suppose that \(0 \to A \to B \overset{f}{\to} M \to 0\) is exact. Then \(f\) is an epimorphism, so there exists a lift \(g\) of the identity \(\operatorname{id} : M \to M\) along the surjection \(f\), such that \(f \circ g = \operatorname{id}\), so the sequence is split.
-  \item \TODO(jesse)
+    \item (\ref{projective-split} \(\implies\) \ref{projective-free-summand}) Write \(M\) as the quotient of a free module \(F \overset{\pi}{\twoheadrightarrow} M\). Then there is a short exact sequence
+      \[ 0 \to \ker(\pi) \hookrightarrow F \overset{\pi}{\twoheadrightarrow} M \to 0 \]
+      and by assumption it is split. By the splitting lemma, there is an isomorphism \(F \simeq \ker(\pi) \oplus M\), so \(M\) is a direct summand of a free module.
+    \item (\ref{projective-free-summand} \(\implies\) \ref{projective-lifting}) Let \(f : M \to B\) and \(g : A \twoheadrightarrow B\) form a diagram as in \ref{projective-lifting}. Since \(M\) is a direct summand of a free module, there exists a module \(N\) such that \(M \oplus N\) is free, so that we have the following picture:
+      \[
+        \begin{tikzcd}
+         M \oplus N \arrow[two heads]{d}{\pi_1} \arrow[dashed]{r} & A \arrow[two heads]{d}{g} \\
+         M \arrow[bend left]{u}{\iota_1} \arrow[swap]{r}{f} & B  
+        \end{tikzcd}
+      \]
+      The horizontal lift of \(f \circ \pi_1\) along \(g\) exists because we can (in general) lift maps from free modules along surjections (determined up to a choice of where basis elements are sent).
+    \item (\ref{projective-hom-exact} \(\implies\) \ref{projective-lifting}) Let \(g : A \twoheadrightarrow B\). Then \(g\) fits into a short exact sequence
+      \[
+        0 \to \ker(g) \hookrightarrow A \overset{g}{\twoheadrightarrow} B \to 0
+      \]
+      and since \(\Hom(M,-)\) is exact, we have an exact sequence
+      \[
+        0 \to \Hom(M,\ker(g)) \hookrightarrow \Hom(M, A) \overset{g \circ -}{\twoheadrightarrow} \Hom(M, B) \to 0.
+      \]
+      Therefore, for any \(f : M \to B\), by the surjectivity of \(g \circ -\), there exists an \(\widetilde{f} : M \to A\) such that \(g \circ \widetilde{f} = f\).
   \end{itemize}
+\end{proof}
+
+\begin{lemma} \label{lemma-fg-projective-idempotent-aux}
+  Let \(M_1 \oplus M_2 \simeq R^n\). Then there exists an idempotent \(e : \Mat_n(R)\) such that \(M_1 \simeq e(R^n)\).
+\end{lemma}
+
+\begin{proof}
+  Let \(e\) be the matrix representing the linear transformation \(f_e : R^n \twoheadrightarrow M_1 \hookrightarrow R^n\).
+
+  It suffices to show that \(f_e\) is an idempotent linear transformation and that its image is \(M_1\).
+
+  To see that \(f_e\) is idempotent, let \(x : R^n\) and write \(x\) as \(x_1 + x_2\) according to the direct sum decomposition \(M_1 \oplus M_2 \simeq R^n\). Then \(e(x_1 + x_2) = e(x_1) + e(x_2) = x_1\), and so \(e^2(x) = e(x_1) = x_1 = e(x)\).
+
+  To see that the image of \(f_e\) is \(M_1\), let \(x : R^n\), and note that \(f_e(x) = f_e(x_1 + x_2) = x_1\) (using the same notation as before), and so \(\im(f_e) \subseteq M_1\). Conversely, given an \(x_1 \in M_1\), we see that \(f_e(x_1) = x_1\), so \(M_1 \subseteq \im(f_e)\).
 \end{proof}
 
 \begin{lemma} \label{lemma-fg-projective-idempotent}
@@ -261,7 +294,7 @@ Now we prove \ref{lemma-covariant-hom-left-exact-2}.
 \end{lemma}
 
 \begin{proof}
-  \TODO(jesse).
+  This follows immediately from \ref{lemma-fg-projective-idempotent-aux} and the definition \ref{projective-free-summand} of projective.
 \end{proof}
 
 \begin{definition} \label{def-category-projective-modules}
