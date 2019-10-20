@@ -1,0 +1,3 @@
+#+TITLE: swan
+
+A formalization of [[https://ncatlab.org/nlab/show/Serre-Swan+theorem][Swan's theorem]] on vector bundles over a compact Hausdorff space, in [[https://leanprover.github.io][Lean]].
