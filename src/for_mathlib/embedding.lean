@@ -6,7 +6,7 @@ instance : discrete_topology punit := ⟨rfl⟩
 
 variables {α : Type*}
 
-lemma discrete_of_singletons_open [t : topological_space α] (h : ∀ x, t.is_open {x}) :
+lemma discrete_of_singletons_open {t : topological_space α} (h : ∀ x, t.is_open {x}) :
   discrete_topology α :=
 ⟨eq_bot_of_singletons_open h⟩
 
