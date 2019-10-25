@@ -106,8 +106,8 @@ variables
 lemma continuous_eval₂ (ϕ : α → β) [is_semiring_hom ϕ] (p : mv_polynomial σ α) : continuous (λ v : σ → β, p.eval₂ ϕ v) :=
 begin
   apply mv_polynomial.induction_on p; clear p,
-    { intro a, simp[continuous_const] },
-    { intros p q Hp Hq, simp[continuous_add, *] },
+    { intro a, simp [continuous_const] },
+    { intros p q Hp Hq, simp [continuous_add, *] },
     { intros p v Hp, simp only [eval₂_mul, eval₂_X],
       exact continuous_mul ‹_› (continuous_apply _) }
 end
