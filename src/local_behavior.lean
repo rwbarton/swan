@@ -80,7 +80,7 @@ end
 --               { subst Ha'₁, exfalso, refine Hb₂ _,
 --                 have := (congr_arg subtype.val Ha'₂), dsimp at this, rw ←this, refl },
 --               { use ⟨a', ‹_›⟩, simp* } } },
-      
+
 --     rw IH, have := H_eq ⟨a, by tidy⟩, dsimp at this, rw this,
 --     apply sum_erase,
 --       { let p := _, change ↑p ∈ _, exact p.2 },
@@ -105,7 +105,11 @@ variables
 
 lemma continuous_eval₂ (ϕ : α → β) [is_semiring_hom ϕ] (p : mv_polynomial σ α) : continuous (λ v : σ → β, p.eval₂ ϕ v) :=
 begin
-  sorry
+  apply mv_polynomial.induction_on p; clear p,
+    { intro a, simp[continuous_const] },
+    { intros p q Hp Hq, simp[continuous_add, *] },
+    { intros p v Hp, simp only [eval₂_mul, eval₂_X],
+      exact continuous_mul ‹_› (continuous_apply _) }
 end
 
 lemma continuous_eval (p : mv_polynomial σ α) : continuous (λ v : σ → α, p.eval v) :=
@@ -114,4 +118,3 @@ continuous_eval₂ id p
 end continuous_eval
 
 end mv_polynomial
-
