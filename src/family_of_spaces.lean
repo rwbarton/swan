@@ -100,6 +100,7 @@ variables {B B' : Type u} [topological_space B] [topological_space B']
 variables (φ : B' → B) -- (hφ : continuous φ) -- hφ is unused? is that okay?
 variables (p : family_of_spaces B)
 
+-- maybe move into a separate namespace
 def pullback : family_of_spaces B' :=
 { d :=
   { F := λ b', p.F (φ b'),
