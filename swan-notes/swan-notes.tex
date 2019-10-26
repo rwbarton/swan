@@ -55,6 +55,8 @@
 \newcommand{\B}{\mathbb{B}}
 \newcommand{\lil}{\lstinline}
 \newcommand{\N}{\mathbb{N}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\supp}{\operatorname{supp}}
 
 \begin{document}
 
@@ -71,12 +73,76 @@ We give an account of Swan's theorem characterizing vector bundles over a compac
 \section*{Introduction}
 % TODO
 
+\section{Preliminaries}
+Throughout this section, we fix a topological space \(X\).
+
+
+\begin{definition}\label{def:cts-functions}
+  We define \(C(X)\) to be the ring of continuous \(\R\)-valued functions on \(X\).
+\end{definition}
+
+\begin{definition}\label{def:support}
+  Let \(g : C(X)\). We define the \textbf{support} of \(g\), denoted \(\supp(g)\), to be the following set:
+  \[ \cl \left( \{ x : X \mid g(x) \neq 0 \} \right).\]
+\end{definition}
+
+% other reference: https://www.math.wisc.edu/~robbin/partitions_of_unity.pdf
+\begin{definition}[\cite{kelley2017general}, Problem 5W]\label{def:partition-of-unity}
+  A \textbf{partition of unity} on \(X\) comprises the following data:
+  \begin{enumerate}[label={(\roman*)}]
+  \item An indexing type \(I\).
+  \item An indexing function \(g : I \to C(X)\).
+  \item An open neighborhood function \(U : X \to 2^X\).
+  \end{enumerate}
+
+  These data must satisfy the following properties:
+
+  \begin{enumerate}[label={(\alph*)}]
+  \item For every \(i : I\), and every \(x : X\), \(g(i)(x) \geq 0\).
+  \item For every \(x : X\), \(U(x)\) is open and \(x \in U(x)\).
+  \item For every \(x : X\), there is a finite set \(I_x \subseteq I\) such that for every \(g \notin I_x\), \(g\) vanishes on \(U(x)\).
+  \item For every \(x : X\), \(\displaystyle \sum_{i : I} g(i)(x) = 1\).
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}\label{def:subordinate}
+  Let \(\mathscr{P} := \langle I, g, U \rangle\) be a partition of unity on \(X\). Let \(\mathscr{U} := \{U_j\}_{j : J}\) be an open cover of \(X\). We define the following property of \(\mathscr{P}\). We say that \(\mathscr{P}\) is \textbf{subordinate to} \(\mathscr{U}\) if for every \(i : I\), there exists a \(j : J\) such that \(\supp(g(i)) \subseteq U_j\).
+\end{definition}
+
+\begin{definition}\label{def:normal-space}
+  Let \(Y\) be a topological space. We define the following property of \(Y\). We say that \(Y\) is \textbf{normal} if for every closed set \(V_1 \subseteq Y\) and every closed set \(V_2 \subseteq Y\), there exists an open neighborhood \(U_1 \supseteq V_1\) and an open neighborhood of \(U_2 \supseteq V_2\) such that \(U_1 \cap U_2 = \emptyset\).
+\end{definition}
+
+\begin{definition}\label{def:locally-finite-open-cover}
+  Let \(\mathscr{U} := \{U_j\}_{j : J}\) be an open cover of \(X\). We define the following property of \(\mathscr{U}\). We say that \(\mathscr{U}\) is \textbf{locally finite} if for every \(x : X\), there exists a neighborhood \(U_x \ni x\) such that \(U_x\) meets only finitely many members of \(\mathscr{U}\).
+\end{definition}
+
+\begin{definition}\label{def:separated-by-function}
+  Let \(V_1\) and \(V_2\) be closed sets of \(X\). Let \(g : C(X)\). We define the following property of \(g\). We say that \textbf{\(g\) separates \(V_1\) and \(V_2\)} if \(g\) has constant value \(c_1\) on \(V_1\) and \(g\) has constant value \(c_2\) on \(V_2\), such that \(c_1 \neq c_2\).
+\end{definition}
+
+\begin{lemma}[Urysohn's lemma]\label{lemma:urysohn}
+  \(X\) is a normal space if and only if for every two disjoint closed sets \(V_1, V_2\), there exists a \(g : C(X)\) such that \(g\) separates \(V_1\) and \(V_2\).
+\end{lemma}
+
+\begin{proof}
+  \TODO(jesse)
+\end{proof}
+
+\begin{lemma} \label{lemma:subordinate-partition-of-unity}
+  Suppose that \(X\) is normal. Let \(\mathscr{U} := \{U_j\}_{j : J}\) be a locally finite open cover of \(X\). Then there exists a partition of unity on \(X\) subordinate to \(\mathscr{U}\).
+\end{lemma}
+
+\begin{proof}
+  \TODO(jesse)
+\end{proof}
+
 \section{Vector bundles}
-For the rest of this document, we fix a compact Hausdorff space \(X\). \(C(X)\) denotes the ring of continuous real-valued functions on \(X\).
+For the rest of this document, we fix a compact Hausdorff space \(X\).
 % TODO: rephrase in terms of fiber functions
 \begin{definition}
 
-\label{def-vector-bundle}
+\label{def:vector-bundle}
  A (real) \textbf{vector bundle over \(X\)} comprises the following data:
   \begin{enumerate}[label={(\roman*)}]
   \item A topological space \(E\), called the \textbf{total space},
@@ -105,11 +171,11 @@ For the rest of this document, we fix a compact Hausdorff space \(X\). \(C(X)\) 
   \TODO(jesse): describe the topology, smooth structure, etc.
 \end{example}
 
-\begin{definition}\label{def-rank}
+\begin{definition}\label{def:rank}
   Let \(E \overset{p}{\to} X\) be a vector bundle. Let \(x : X\). The \textbf{rank of \(E\) at \(x\)} is the dimension of the vector space \(E_x\).
 \end{definition}
 
-\begin{lemma}\label{lemma-rank-locally-constant}
+\begin{lemma}\label{lemma:rank-locally-constant}
   Rank is a locally constant function. That is, for every \(x : X\), there is a neighborhood \(V_{x}\) of \(x\) such that the rank of \(E\) is constant on \(V_x\).
 \end{lemma}
 
@@ -117,27 +183,27 @@ For the rest of this document, we fix a compact Hausdorff space \(X\). \(C(X)\) 
   \TODO(jesse).
 \end{proof}
 
-\begin{definition} \label{def-vector-bundle-homomorphism}
+\begin{definition} \label{def:vector-bundle-homomorphism}
   Let \(E_1 \overset{p_1}{\to} X\) and \(E_2 \overset{p_2}{\to} X\) be vector bundles over \(X\).
   A \textbf{vector bundle morphism} is a map \(f : E_1 \to E_2\) over \(X\) such that for every \(x : X\), \(E_{1,x} \overset{f}{\to} E_{2,f(x)}\) is also a map of vector spaces.
 \end{definition}
 
-\begin{definition} \label{def-category-vector-bundles}
+\begin{definition} \label{def:category-vector-bundles}
   We define \(\Vect(X)\), the category of vector bundles over \(X\), to be the category whose objects are the vector bundles over \(X\) and whose morphisms are the vector bundle morphisms.
 \end{definition}
 
-\begin{definition}\label{def-global-sections}
+\begin{definition}\label{def:global-sections}
   Let \(E \overset{p}{\to} X\) be a vector bundle over \(X\). The \textbf{global sections} of \(E\) are the set of continuous right-inverses to \(p\). We denote the global sections of \((E,p)\) by \(\Gamma((E,p))\).  
 \end{definition}
 
-\begin{lemma}\label{lemma-global-sections-module}
+\begin{lemma}\label{lemma:global-sections-module}
   For every vector bundle \((E,p)\), \(\Gamma((E,p))\) is a \(C(X)\)-module.
 \end{lemma}
 \begin{proof}
   Let \(\sigma : X \to E\) be a section, and let \(c : X \to \R\) be an element of \(C(X)\). The scalar multiplication is given by \(c \cdot x := \lambda \hspace{2mm} z, c(z) \cdot s(z)\).\footnote{Note that here, the vector space structure on \(E_x\) is essential.}
 \end{proof}
 
-\begin{definition}\label{def-global-sections-functor}
+\begin{definition}\label{def:global-sections-functor}
   More generally, we define the \textbf{global sections functor}
   \[\Gamma : \Vect(X) \to C(X)\Mod\]
   as follows:
@@ -166,7 +232,7 @@ For the rest of this document, we fix a compact Hausdorff space \(X\). \(C(X)\) 
   
 \end{definition}
 
-\begin{definition}\label{def-local-base}
+\begin{definition}\label{def:local-base}
   Let \((E,p)\) be a vector bundle over \(X\). Let \(x : X\). We define a \textbf{local base} for \((E,p)\) at \(x\) to be the following data:
   \begin{enumerate}[label={(\alph*)}]
   \item An open set \(U\), such that \(U \ni x\),
@@ -177,27 +243,27 @@ For the rest of this document, we fix a compact Hausdorff space \(X\). \(C(X)\) 
 \section{Projective modules}
 Throughout this section, we fix a commutative ring \(R\).
 
-\begin{definition} \label{def-left-exact}
+\begin{definition} \label{def:left-exact}
   Let \(R\) and \(S\) be rings. We say that a functor \(F : R\Mod \to S\Mod\) is \textbf{left-exact} if it preserves \(0\) and direct sums, and for every short exact sequence \(0 \to A \overset{f_1}{\to} B \overset{f_2}{\to} C \to 0\) in \(R\Mod\),
   \[0 \to F(A) \overset{F(f_1)}{\to} F(B) \overset{F(f_2)}{\to} F(C)\]
   is a short exact sequence in \(S\Mod\)
 \end{definition}
 
-\begin{definition} \label{def-right-exact}
+\begin{definition} \label{def:right-exact}
   Let \(R\) and \(S\) be rings. We say that a functor \(F : R\Mod \to S\Mod\) is \textbf{left-exact} if it preserves \(0\) and direct sums, and for every short exact sequence \(0 \to A \overset{f_1}{\to} B \overset{f_2}{\to} C \to 0\) in \(R\Mod\),
   \[F(A) \overset{F(f_1)}{\to} F(B) \overset{F(f_2)}{\to} F(C) \to 0\]
   is a short exact sequence in \(S\Mod\).
 \end{definition}
 
-\begin{lemma}\label{lemma-left-exact-finite-limits}
+\begin{lemma}\label{lemma:left-exact-finite-limits}
   \(F : R\Mod \to S\Mod\) is left exact if and only if \(F\) preserves finite limits.
 \end{lemma}
 
-\begin{lemma}\label{lemma-right-exact-finite-limits}
+\begin{lemma}\label{lemma:right-exact-finite-limits}
   \(F : R\Mod \to S\Mod\) is right exact if and only if \(F\) preserves finite colimits.
 \end{lemma}
 
-\begin{lemma}\label{lemma-covariant-hom-left-exact}
+\begin{lemma}\label{lemma:covariant-hom-left-exact}
   Let \(M\) be an \(R\)-module. Then the covariant hom-functor \(\RHom{R}{M}{-}\) is left-exact.
 \end{lemma}
 
@@ -208,19 +274,19 @@ Throughout this section, we fix a commutative ring \(R\).
 
   That is, we need to show that
   \begin{enumerate}
-  \item \label{lemma-covariant-hom-left-exact-1}\(f_1 \circ -\) is injective.
-  \item \label{lemma-covariant-hom-left-exact-2} \(\im(f_1 \circ -) = \ker(f_2 \circ -)\).
+  \item \label{lemma:covariant-hom-left-exact-1}\(f_1 \circ -\) is injective.
+  \item \label{lemma:covariant-hom-left-exact-2} \(\im(f_1 \circ -) = \ker(f_2 \circ -)\).
   \end{enumerate}
 
-First, we prove  \ref{lemma-covariant-hom-left-exact-1}.
+First, we prove  \ref{lemma:covariant-hom-left-exact-1}.
     Let \(g_1, g_2 : M \to A\) such that \(f_1 \circ g_1 = f_1 \circ g_2\). By assumption on \(f_1\), \(f_1\) is injective, so it follows that \(g_1 = g_2\).
 
-Now we prove \ref{lemma-covariant-hom-left-exact-2}.
+Now we prove \ref{lemma:covariant-hom-left-exact-2}.
     Let \(g : M \to A\). Then \(f_2 \circ f_1 \circ g : M \to C\) is zero because \(f_2 \circ f_1\) is zero, which shows that \(\im(f_1 \circ -) \subseteq \ker(f_2 \circ -)\). For the other inclusion, let \(h : M \to B\)  such that \(f_2 \circ h = 0\). It suffices to exhibit a \(g : M \to A\) such that \(f_1 \circ g = h\). We define \(g\) pointwise. Fix \(m \in M\). Since \(f_2 \circ h = 0\), we have that \(\im(h) \subseteq \ker(f_2)\). By assumption on \(f_2\), \(\ker(f_2) = \im(f_1)\), so \(\im(h) \subseteq \im(f_1)\). That is, there exists some \(a \in A\) such that \(h(m) = f_1(a)\). We define \(g(m) = a\). Since \(f_1\) is injective, this function is well-defined and is easily checked to be an \(R\)-module homomorphism.
 
   \end{proof}
 
-  \begin{definition}[\cite{nlab:projective_module}]\label{def-projective}
+  \begin{definition}[\cite{nlab:projective_module}]\label{def:projective}
   Let \(M\) be an \(R\)-module. \(M\) is projective if it satisfies any of the following properties:
 
   \begin{enumerate}
@@ -239,7 +305,7 @@ Now we prove \ref{lemma-covariant-hom-left-exact-2}.
   \end{enumerate}
 \end{definition}
 
-\begin{lemma}\label{lemma-projective-equivalent}
+\begin{lemma}\label{lemma:projective-equivalent}
   The properties \ref{projective-lifting}, \ref{projective-free-summand}, \ref{projective-split}, and \ref{projective-hom-exact} are equivalent.
 \end{lemma}
 \begin{proof}
@@ -247,7 +313,7 @@ Now we prove \ref{lemma-covariant-hom-left-exact-2}.
   \item (\ref{projective-lifting} \(\implies\) \ref{projective-hom-exact})
     Let \(0 \to A \overset{f_1}{\to} B \overset{f_2}{\to} C \to 0\) be an exact sequence. We need to show that the following sequence is also exact:
     \[0 \to \RHom{R}{M}{A} \overset{f_1 \circ -}{\to} \RHom{R}{M}{B} \overset{f_2 \circ -}{\to} \RHom{R}{M}{C} \to 0.\]
-    Left-exactness is exactly the conclusion of \ref{lemma-covariant-hom-left-exact}.
+    Left-exactness is exactly the conclusion of \ref{lemma:covariant-hom-left-exact}.
 
     To show right-exactness, it suffices to show that \(f_2 \circ -\) is surjective. Fix \(h : M \to C\). By assumption, \(f_2\) is surjective. Then we are in the situation of \ref{projective-lifting}, so there exists a lift \(\wt{h} : M \to B\) of \(h\) along \(f_2\) such that \(f_2 \circ \wt{h} = h\).
 
@@ -275,7 +341,7 @@ Now we prove \ref{lemma-covariant-hom-left-exact-2}.
   \end{itemize}
 \end{proof}
 
-\begin{lemma} \label{lemma-fg-projective-idempotent-aux}
+\begin{lemma} \label{lemma:fg-projective-idempotent-aux}
   Let \(M_1 \oplus M_2 \simeq R^n\). Then there exists an idempotent \(e : \Mat_n(R)\) such that \(M_1 \simeq e(R^n)\).
 \end{lemma}
 
@@ -289,15 +355,15 @@ Now we prove \ref{lemma-covariant-hom-left-exact-2}.
   To see that the image of \(f_e\) is \(M_1\), let \(x : R^n\), and note that \(f_e(x) = f_e(x_1 + x_2) = x_1\) (using the same notation as before), and so \(\im(f_e) \subseteq M_1\). Conversely, given an \(x_1 \in M_1\), we see that \(f_e(x_1) = x_1\), so \(M_1 \subseteq \im(f_e)\).
 \end{proof}
 
-\begin{lemma} \label{lemma-fg-projective-idempotent}
+\begin{lemma} \label{lemma:fg-projective-idempotent}
   Let \(M\) be a finitely-generated projective \(R\)-module . Then there exists an \(n\) and an idempotent \(e : \Mat_n(R)\) such that \(M \simeq e(R^n)\).
 \end{lemma}
 
 \begin{proof}
-  This follows immediately from \ref{lemma-fg-projective-idempotent-aux} and the definition \ref{projective-free-summand} of projective.
+  This follows immediately from \ref{lemma:fg-projective-idempotent-aux} and the definition \ref{projective-free-summand} of projective.
 \end{proof}
 
-\begin{definition} \label{def-category-projective-modules}
+\begin{definition} \label{def:category-projective-modules}
   We define \(\fgProj(R)\) to be the full subcategory of \(R\text{-Mod}\) on the finitely-generated projective \(R\)-modules.
 \end{definition}
 
@@ -305,7 +371,7 @@ Now we prove \ref{lemma-covariant-hom-left-exact-2}.
 
 Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous functions on \(X\).
 
-\begin{lemma}[\cite{swan1962vector}, Lemma 1]\label{lemma-1}
+\begin{lemma}[\cite{swan1962vector}, Lemma 1]\label{lemma:1}
   Let \(x \in X\). Let \(E \overset{p}{\to} X\) be a vector bundle, and let \(t_1, \dots, t_k\) be sections of \(E\) over a neighborhood \(U \ni x\) such that \(t_1(x), \dots, t_k(x)\) are linearly independent.
 
   Then there is a neighborhood \(V \ni x\) such that for all \(y \in V\), \(t_1(y), \dots, t_k(y)\) are linearly independent.
@@ -321,19 +387,19 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
   is continuous, there exists a neighborhood \(V_0\) of \(f_x\) such that for every \(h \in V_0\), \(h\) is injective. Then we can take \(V = \mathbf{s}^{-1}(V_0)\).
 \end{proof}
 
-\begin{lemma}[Proposition 1, \cite{swan1962vector}]\label{lemma-proposition-1}
+\begin{lemma}[Proposition 1, \cite{swan1962vector}]\label{lemma:proposition-1}
   Let \(f : (E,p) \to (E',o')\) be a map of vector bundles over \(X\). Then the following are equivalent:
   \begin{enumerate}[label={(\alph*)}]
-  \item \label{lemma-proposition-1-1} \(\ker f\) is a subbundle of \((E,p)\). 
-  \item \label{lemma-proposition-1-2} The dimensions of the fibers of \(ker f\) are locally constant.
+  \item \label{lemma:proposition-1-1} \(\ker f\) is a subbundle of \((E,p)\). 
+  \item \label{lemma:proposition-1-2} The dimensions of the fibers of \(ker f\) are locally constant.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
-  By \ref{lemma-rank-locally-constant}, the rank of a bundle is locally constant, so by definition, \ref{lemma-proposition-1-1} implies \ref{lemma-proposition-1-2}. For the converse, we must exhibit trivialization data for \(\ker f\), so let \(x \in X\). We will obtain an open set \(U\) which trivializes \(\ker f\) at \(x\) as follows. Let \(n\) be the rank of \(E\) at \(x\). Since \((E,p)\) is a bundle, we can choose a local base \(\{s_1, \cdots, s_n\}\) for \((E,p)\) at \(x\). We can number the \(s_1, \dots, s_n\) such that (for \(k\) the locally constant dimension of \(\im f\) near \(x\)) \(f \circ s_1, \dots, f \circ s_k\) form a local base for \((E',p')\) at \(f(x)\). It follows that there is a neighborhood \(U \ni x\) such that for all \(y \in U\), and for every \(i > k\), \(f \circ s_i(y) = \sum_{j = 1}^k a_{ij}(y) \cdot f \circ s_j(y).\) Then for every \(i\),
+  By \ref{lemma:rank-locally-constant}, the rank of a bundle is locally constant, so by definition, \ref{lemma:proposition-1-1} implies \ref{lemma:proposition-1-2}. For the converse, we must exhibit trivialization data for \(\ker f\), so let \(x \in X\). We will obtain an open set \(U\) which trivializes \(\ker f\) at \(x\) as follows. Let \(n\) be the rank of \(E\) at \(x\). Since \((E,p)\) is a bundle, we can choose a local base \(\{s_1, \cdots, s_n\}\) for \((E,p)\) at \(x\). We can number the \(s_1, \dots, s_n\) such that (for \(k\) the locally constant dimension of \(\im f\) near \(x\)) \(f \circ s_1, \dots, f \circ s_k\) form a local base for \((E',p')\) at \(f(x)\). It follows that there is a neighborhood \(U \ni x\) such that for all \(y \in U\), and for every \(i > k\), \(f \circ s_i(y) = \sum_{j = 1}^k a_{ij}(y) \cdot f \circ s_j(y).\) Then for every \(i\),
   \[s_i'(y) := s_i(y) - \sum_{j = 1}^k a_{ij}(y)s_j(y) : (\ker f)_y,\]
   and the $\{s_1, \cdots, s_{n - k}\}$ form a local base near \(x\), as required.
 \end{proof}
-\begin{lemma}[Proposition 2, \cite{swan1962vector}] \label{lemma-proposition-2}
+\begin{lemma}[Proposition 2, \cite{swan1962vector}; Proposition 1.3, \cite{hatcher2003vector}] \label{lemma:proposition-2}
   Any subbundle of a vector bundle \((E,p)\) over \(X\) is a direct summand.
 \end{lemma}
 
@@ -342,7 +408,7 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
 \end{proof}
 
 
-\begin{lemma}[Lemma 5, \cite{swan1962vector}]\label{lemma-lemma-5}
+\begin{lemma}[Lemma 5, \cite{swan1962vector}]\label{lemma:lemma:5}
   Let \((E,p)\) be a vector bundle over \(X\). Then there exists a trivial vector bundle \(X \times \R^n \overset{\pi_1}{\to} X\) and a vector bundle epimorphism \((X \times \R^n) \twoheadrightarrow E\).
 \end{lemma}
 
@@ -351,16 +417,16 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
 \end{proof}
 
 \begin{lemma}
-  \label{lemma-global-sections-projective}
+  \label{lemma:global-sections-projective}
   Let \((E,p)\) be a vector bundle over \(X\). Then \(\Gamma((E,p))\) is a projective \(R\)-module.
 \end{lemma}
 
 \begin{proof}
-  By \ref{def-projective}, it suffices to show that every vector bundle over \(X\) is a direct summand of a trivial bundle over \(X\). Let \((E,p)\) be a vector bundle over \(X\).By \ref{lemma-lemma-5}, there exists some trivial bundle \(X \times \R^n \twoheadrightarrow X\) and an epimorphism \(f : X \times \R^n \twoheadrightarrow E\). Let \(\eta\) be the kernel of this epimorphism. By \ref{lemma-proposition-2}, \(\eta\) is a direct summand of \(X \times \R^n\), so there is some \(\eta'\) such that \(X \times \R^n \simeq \eta \oplus \eta'\). Let \(\iota_2 : \eta' \hookrightarrow \eta \oplus \eta'\) be the canonical inclusion. Then it is easy to check that \(f \circ \iota_2\) is an isomorphism \(\eta' \simeq (E,p)\).
+  By \ref{def:projective}, it suffices to show that every vector bundle over \(X\) is a direct summand of a trivial bundle over \(X\). Let \((E,p)\) be a vector bundle over \(X\).By \ref{lemma:lemma:5}, there exists some trivial bundle \(X \times \R^n \twoheadrightarrow X\) and an epimorphism \(f : X \times \R^n \twoheadrightarrow E\). Let \(\eta\) be the kernel of this epimorphism. By \ref{lemma:proposition-2}, \(\eta\) is a direct summand of \(X \times \R^n\), so there is some \(\eta'\) such that \(X \times \R^n \simeq \eta \oplus \eta'\). Let \(\iota_2 : \eta' \hookrightarrow \eta \oplus \eta'\) be the canonical inclusion. Then it is easy to check that \(f \circ \iota_2\) is an isomorphism \(\eta' \simeq (E,p)\).
 \end{proof}
 
 %TODO(jesse): maybe explicitly construct and name the inverse functor?
-\begin{theorem}[Swan, \cite{swan1962vector}]
+\begin{theorem}[Swan, \cite{swan1962vector}] \label{thm:swan}
   The global sections functions induces an equivalence of categories
   \[\Gamma : \Vect(X) \overset{\sim}{\longrightarrow} \fgProj(X).\]
 \end{theorem}
@@ -371,15 +437,15 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
 
 \section{Kaplansky's theorem on projective modules over local rings}
 
-\begin{definition}\label{def-local-ring}
+\begin{definition}\label{def:local-ring}
   Let \(R\) be a commutative ring. \(R\) is \textbf{local} if it has a unique maximal ideal.
 \end{definition}
 
-\begin{definition}\label{def-free-module}
+\begin{definition}\label{def:free-module}
   Let \(R\) be a commutative ring. Let \(M\) be an \(R\)-module. \(M\) is \textbf{free} if \(M\) has a basis; equivalently, if \(M\) is isomorphic to a direct sum of copies of \(R\).
 \end{definition}
 
-\begin{theorem}[Kaplansky]\label{thm-kaplansky}
+\begin{theorem}[Kaplansky]\label{thm:kaplansky}
   Let \(R\) be a local ring, and let \(M\) be a projective module over \(R\). Then \(M\) is free.
 \end{theorem}
 
