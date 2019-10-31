@@ -10,10 +10,11 @@ import
   topology.basic
   topology.opens
   topology.algebra.module
+  analysis.normed_space.basic
   linear_algebra.finite_dimensional
   .family_of_spaces
 
-universe u
+universes u v
 
 section family_of_spaces
 
@@ -42,6 +43,8 @@ variables {B : Type u} [topological_space B]
 @[reducible]def pullback_of_subset (𝓕 : family_of_spaces B) (U : set B) : family_of_spaces U :=
 pullback (subtype.val : U → B) 𝓕
 
+
+
 local infix `|_`:70 := pullback_of_subset
 
 -- a "fiber bundle" is a locally trivial family of spaces
@@ -60,7 +63,7 @@ structure fiber_bundle :=
 end fiber_bundle
 
 section vector_bundle
-variables {B : Type u} [topological_space B] {α : Type u} [discrete_field α] [topological_space α]
+variables {𝕜 : Type u} [discrete_field 𝕜] [topological_space 𝕜] {B : Type u} [topological_space B]
 
 local infix `|_`:70 := pullback_of_subset
 
@@ -71,20 +74,55 @@ H
 
 instance pullback_subset.add_comm_group {𝓑 : fiber_bundle B} {b : B} [H : add_comm_group (𝓑.𝓕.F b)] : add_comm_group (family_of_spaces.F (𝓑.𝓕|_ (𝓑.triv_nbhd b)) ⟨b, 𝓑.triv_nbhd_mem _⟩) := H
 
-instance trivial_fiber.vector_space {F : Type u} [topological_space F] [H_F : add_comm_group F] [H : vector_space α F] {b : B} : vector_space α ((trivial_family B F).F b) := -- by apply_instance -- fails??
+instance trivial_fiber.vector_space {F : Type u} [topological_space F] [H_F : add_comm_group F] [H : vector_space 𝕜 F] {b : B} : vector_space 𝕜 ((trivial_family B F).F b) := -- by apply_instance -- fails??
 H
 
-instance pullback_subset.vector_space {𝓑 : fiber_bundle B} {b : B} [H_F : add_comm_group (𝓑.𝓕.F b)][H : vector_space α (𝓑.𝓕.F b)] : vector_space α (family_of_spaces.F (𝓑.𝓕|_ (𝓑.triv_nbhd b)) ⟨b, 𝓑.triv_nbhd_mem _⟩) := H
+instance pullback_subset.vector_space {𝓑 : fiber_bundle B} {b : B} [H_F : add_comm_group (𝓑.𝓕.F b)][H : vector_space 𝕜 (𝓑.𝓕.F b)] : vector_space 𝕜 (family_of_spaces.F (𝓑.𝓕|_ (𝓑.triv_nbhd b)) ⟨b, 𝓑.triv_nbhd_mem _⟩) := H
 
-/- a vector bundle over a topological field α is a fiber bundle whose fibers are all topological vector spaces over α,
+/- a 𝕜-vector bundle over a base space B is a fiber bundle whose fibers are all topological vector spaces over 𝕜,
 and whose local trivializations' fibers are topological vector spaces and triv_homeo is a fiberwise linear map -/
+
+variables (𝕜) (B)
 structure vector_bundle extends fiber_bundle B :=
 (vF1 : Π b, add_comm_group (𝓕.F b))
-(vF2 : Π b, vector_space α (𝓕.F b))
-(vF3 : Π b, topological_vector_space α (𝓕.F b))
+(vF2 : Π b, vector_space 𝕜 (𝓕.F b))
+(vF3 : Π b, topological_vector_space 𝕜 (𝓕.F b))
 (vF4 : Π b, add_comm_group (triv_fiber b)) -- maybe turn these into typecass arguments?
-(vF5 : Π b, vector_space α (triv_fiber b))
-(vF6 : Π b, topological_vector_space α (triv_fiber b))
-(vF7 : Π b, is_linear_map α ((triv_homeo b).to_fun.f ⟨b, triv_nbhd_mem _⟩) )
+(vF5 : Π b, vector_space 𝕜 (triv_fiber b))
+(vF6 : Π b, topological_vector_space 𝕜 (triv_fiber b))
+(vF7 : Π b, is_linear_map 𝕜 ((triv_homeo b).to_fun.f ⟨b, triv_nbhd_mem _⟩) )
 
 end vector_bundle
+
+variables {𝕜 : Type u} (B : Type u) [topological_space B] [normed_field 𝕜]
+
+def trivial_line_bundle_homeo : family_homeomorphism (pullback_of_subset (trivial_family B 𝕜) set.univ) (trivial_family (↥(set.univ : set B)) 𝕜) :=
+{ to_fun := { f := λ b, id,
+  hf := by { intros U HU, sorry  } },
+  inv_fun := { f := λ b, id,
+  hf := by { intros U HU, sorry } },
+  left_inv := rfl,
+  right_inv := rfl }
+
+lemma is_linear_map_id {α R : Type*} [add_comm_group α] [comm_ring R] [module R α] : is_linear_map R (id : α → α) :=
+begin
+  rw [show (id : α → α) = λ x, (1 : R) • x, by ext; simp],
+  exact is_linear_map.is_linear_map_smul _
+end
+
+def trivial_line_bundle  : vector_bundle 𝕜 B :=
+{ 𝓕 := trivial_family B 𝕜,
+  triv_nbhd := λ _, set.univ,
+  triv_nbhd_open := λ _, is_open_univ,
+  triv_nbhd_mem := λ _, set.mem_univ _,
+  triv_fiber := λ _, 𝕜,
+  triv_fiber_space := by apply_instance,
+  triv_homeo :=  λ b,
+    trivial_line_bundle_homeo B,
+  vF1 := by apply_instance,
+  vF2 := by apply_instance,
+  vF3 := by sorry,
+  vF4 := by apply_instance,
+  vF5 := by apply_instance,
+  vF6 := by sorry,
+  vF7 := by { intro b, simp, apply is_linear_map_id } }
