@@ -121,8 +121,8 @@ def trivial_line_bundle  : vector_bundle 𝕜 B :=
     trivial_line_bundle_homeo B,
   vF1 := by apply_instance,
   vF2 := by apply_instance,
-  vF3 := by sorry,
+  vF3 := by sorry, -- a normed field is a topological vector space over itself
   vF4 := by apply_instance,
   vF5 := by apply_instance,
-  vF6 := by sorry,
+  vF6 := by sorry, -- same as vF3
   vF7 := by { intro b, simp, apply is_linear_map_id } }

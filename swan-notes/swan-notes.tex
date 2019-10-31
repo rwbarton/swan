@@ -88,6 +88,7 @@ Throughout this section, we fix a topological space \(X\).
 \end{definition}
 
 % other reference: https://www.math.wisc.edu/~robbin/partitions_of_unity.pdf
+% TODO(jesse): refactor this definition in terms of families of spaces to reflect the formalization.
 \begin{definition}[\cite{kelley2017general}, Problem 5W]\label{def:partition-of-unity}
   A \textbf{partition of unity} on \(X\) comprises the following data:
   \begin{enumerate}[label={(\roman*)}]
@@ -398,6 +399,7 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
   is continuous, there exists a neighborhood \(V_0\) of \(f_x\) such that for every \(h \in V_0\), \(h\) is injective. Then we can take \(V = \mathbf{s}^{-1}(V_0)\).
 \end{proof}
 
+% TODO(jesse): add back in conditions on im(f)
 \begin{lemma}[Proposition 1, \cite{swan1962vector}]\label{lemma:proposition-1}
   Let \(f : (E,p) \to (E',o')\) be a map of vector bundles over \(X\). Then the following are equivalent:
   \begin{enumerate}[label={(\alph*)}]
@@ -406,10 +408,24 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
   \end{enumerate}
 \end{lemma}
 \begin{proof}
-  By \Cref{lemma:rank-locally-constant}, the rank of a bundle is locally constant, so by definition, \Cref{lemma:proposition-1-1} implies \Cref{lemma:proposition-1-2}. For the converse, we must exhibit trivialization data for \(\ker f\), so let \(x \in X\). We will obtain an open set \(U\) which trivializes \(\ker f\) at \(x\) as follows. Let \(n\) be the rank of \(E\) at \(x\). Since \((E,p)\) is a bundle, we can choose a local base \(\{s_1, \cdots, s_n\}\) for \((E,p)\) at \(x\). We can number the \(s_1, \dots, s_n\) such that (for \(k\) the locally constant dimension of \(\im f\) near \(x\)) \(f \circ s_1, \dots, f \circ s_k\) form a local base for \((E',p')\) at \(f(x)\). It follows that there is a neighborhood \(U \ni x\) such that for all \(y \in U\), and for every \(i > k\), \(f \circ s_i(y) = \sum_{j = 1}^k a_{ij}(y) \cdot f \circ s_j(y).\) Then for every \(i\),
-  \[s_i'(y) := s_i(y) - \sum_{j = 1}^k a_{ij}(y)s_j(y) : (\ker f)_y,\]
-  and the $\{s_1, \cdots, s_{n - k}\}$ form a local base near \(x\), as required.
+  By \Cref{lemma:rank-locally-constant}, the rank of a bundle is locally constant, so by definition, \Cref{lemma:proposition-1-1} implies \Cref{lemma:proposition-1-2}. For the converse, we must exhibit trivialization data for \(\ker f\), so let \(x \in X\). We will obtain an open set \(U\) which trivializes \(\ker f\) at \(x\) as follows. Let \(n\) be the rank of \(E\) at \(x\). Since \((E,p)\) is a bundle, we can choose a local base \(\{s_1, \dots, s_n\}\) for \((E,p)\) at \(x\). There is a subset of these, say \(s_1, \dots, s_k\), such that \(f s_1, \dots, f s_k\) are a basis for \(\im(f)_{f(x)}\).
+  
+  %Let \(t_1, \dots, t_n\) be a local base for \(E'\) at \(x\). By traversing the \(t_i\) and renumbering, we can assume that \(fs_1, \dots, fs_k, t_{k+1}, \dots, t_n\) are linearly independent at \(x\). Applying \Cref{lemma:1} and the fact that the rank of \(E'\) is locally constant, we conclude that \(fs_1, \dots, fs_k, t_{k+1}, \dots, t_n\) form a local base for \(E'\) at \(f(x)\).
+  
+  It follows that there is a neighborhood \(U \ni x\) such that for all \(y \in U\), and for every \(i > k\), \(f \circ s_i(y) = \sum_{j = 1}^k a_{ij}(y) \cdot f \circ s_j(y).\) Then for every \(i\),
+  \[\left( s_i'(y) := s_i(y) - \sum_{j = 1}^k a_{ij}(y)s_j(y) \right) : (\ker f)_y,\]
+  and the $\{s'_{k+1}, \cdots, s'_{n}\}$ form a local base for \(\ker(f)\) near \(x\), as required.
 \end{proof}
+
+\begin{lemma}\label{lemma:proposition-1-aux}
+  Let \(f : (E,p) \to (E', o')\) be a map of vector bundles over \(X\). For every \(x : X\), there exists a neighborhood \(U\) such that for all \(y \in U\), \(\dim(\im(f)_y) \geq \dim(\im(f)_x)\).
+\end{lemma}
+
+\begin{proof}
+  Let \(s_1, \dots, s_m\) be a local base for \(E\) at \(x\). Let \(k = \dim(\im(f)_{f(x)})\). We renumber the \(s_i\) so that \(fs_k(x), \dots, fs_k(x)\) form a basis for \(\im(f)_{f(x)}\). Since the \(s_1, \dots, s_n\) are a local base, there exists a neighborhood \(U\) of \(x\) such that for all \(y \in U\), \(\{fs_1y, \dots, fs_ky\}\) form a basis for \(\im(f)_{f(y)}\). By Lemma \(1\), \(s_1, \dots, s_k\) are independent at \(y \in V\) for \(V \subseteq U\), and the inequality follows.
+\end{proof}
+
+
 \begin{lemma}[Proposition 2, \cite{swan1962vector}; Proposition 1.3, \cite{hatcher2003vector}] \label{lemma:proposition-2}
   Any subbundle of a vector bundle \((E,p)\) over \(X\) is a direct summand.
 \end{lemma}
@@ -441,12 +457,51 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
   Let \((E,p)\) and \((E',p')\) be vector bundles over \(X\). Let \(f,g : (E,p) \to (E',p')\) be vector bundle maps. Suppose that \(\Gamma(f) = \Gamma(g)\). To show \(f = g\), it suffices by function extensionality to show that for all \(e : E\), \(f(e) = g(e)\). Let \(e : E\). Let \(x = p(e)\). By local triviality, there exists a local section \(\sigma : U \to E\) of \(x\) such that \(\sigma(x) = e\). By \Cref{lemma:section-extension}, we can extend \(\sigma\) to a global section such that \(\sigma (x) = e\). Since \(\Gamma(f) = \Gamma(g)\), \(f \circ \sigma = g \circ \sigma\), and so \(f(e) = f \circ \sigma(x) = g \circ \sigma(x) = g(e)\), as required.
 \end{proof}
 
+\begin{lemma}\label{lemma:localization-1}
+  Let \((E,p)\) be a vector bundle over \(X\). Let \(\mathfrak{m}_x\) be the maximal ideal of \(R\) comprising those functions which vanish at \(x\). Let \(M_x(E)\) be the \(R\)-submodule of \(\Gamma((E,p))\) comprising those sections which vanish on \(x\). Then \(\mathfrak{m}_x \Gamma((E,p)) = M_x(E)\).
+\end{lemma}
+
+\begin{proof}
+  \TODO(jesse)
+\end{proof}
+
+\begin{lemma}\label{lemma:localization-2}
+  Let \((E,p)\) be a vector bundle over \(X\). Let \(x : X\). The evaluation map \(\sigma \mapsto \sigma(x)\) descends to an \(R\)-module isomorphism
+  \[
+    \Gamma((E,p))/M_x(E) \simeq (E,p)_x.
+  \]
+\end{lemma}
+
+\begin{proof}
+  Immediate.
+\end{proof}
+
 \begin{lemma}[Theorem 1, \cite{swan1962vector}]\label{lemma:global-sections-full}
   The global sections functor is full.
 \end{lemma}
 
 \begin{proof}
-  \TODO(jesse)
+  Let \((E,p)\) and \((E',p')\) be vector bundles over \(X\). Let \(f : \Gamma((E,p)) \to \Gamma((E',p'))\). Let \(x : X\).
+
+  Immediately, we see that \(f\) descends to an \(R\)-module map \[f_x : \Gamma((E,p))/\mathfrak{m}_x \Gamma((E,p)) \to \Gamma((E',p'))/\mathfrak{m}_x \Gamma((E',p)).\]
+  By \Cref{lemma:localization-1}, we obtain a map
+  \[
+f_x : \Gamma((E,p))/M_x(E) \to \Gamma((E',p'))/M_x(E').
+\]
+By \Cref{lemma:localization-2}, we then get a map on fibers
+\[
+f_x : (E,p)_x \to (E',p')_x,
+\]
+which is \(R\)-linear, so by restriction of scalars is also \(\R\)-linear.
+whose disjoint union \(\widetilde{f}\) is a map \(E \to E'\). By construction, \(\widetilde{f}\) is \(\R\)-linear on fibers, and it remains to verify that \(\widetilde{f}\) is continuous.
+
+Note that by function extensionality, for every \(\sigma : \Gamma((E,p))\), \(\widetilde{f} \circ \sigma\) = \(f (\sigma)\).
+
+Since continuity is a local property, it suffices to fix \(e : E\) and verify it near \(e\). Let \(s_1, \dots, s_n\)be a local base of \((E,p)\) at \(p(e)\). Then for all \(e'\) near \(e\), \(e' = \sum_{i \leq n} c_i(e') s_i(p(e'))\), where \(c_1, \dots, c_n : R\), and
+\[
+  \widetilde{f}(e') = \sum_{i \leq n} c_i(e') \widetilde{f}(s_i(p(e'))) = \sum_{i \leq n} c_i(e') (f(s_i))(p(e'))
+\]
+is a sum of continuous functions in \(e'\).
 \end{proof}
 
 \begin{lemma}[Lemma 5, \cite{swan1962vector}]\label{lemma:free-resolution}
@@ -465,7 +520,7 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
 \end{lemma}
 
 \begin{proof}
-  By \Cref{def:projective}, it suffices to show that every vector bundle over \(X\) is a direct summand of a trivial bundle over \(X\). Let \((E,p)\) be a vector bundle over \(X\).By \Cref{lemma:free-resolution}, there exists some trivial bundle \(X \times \R^n \twoheadrightarrow X\) and an epimorphism \(f : X \times \R^n \twoheadrightarrow E\). Let \(\eta\) be the kernel of this epimorphism. By \Cref{lemma:proposition-2}, \(\eta\) is a direct summand of \(X \times \R^n\), so there is some \(\eta'\) such that \(X \times \R^n \simeq \eta \oplus \eta'\). Let \(\iota_2 : \eta' \hookrightarrow \eta \oplus \eta'\) be the canonical inclusion. Then it is easy to check that \(f \circ \iota_2\) is an isomorphism \(\eta' \simeq (E,p)\).
+  By \Cref{def:projective}, it suffices to show that every vector bundle over \(X\) is a direct summand of a trivial bundle over \(X\). Let \((E,p)\) be a vector bundle over \(X\). By \Cref{lemma:free-resolution}, there exists some trivial bundle \(X \times \R^n \twoheadrightarrow X\) and an epimorphism \(f : X \times \R^n \twoheadrightarrow E\). Let \(\eta\) be the kernel of this epimorphism. By \Cref{lemma:proposition-2}, \(\eta\) is a direct summand of \(X \times \R^n\), so there is some \(\eta'\) such that \(X \times \R^n \simeq \eta \oplus \eta'\). Let \(\iota_2 : \eta' \hookrightarrow \eta \oplus \eta'\) be the canonical inclusion. Then it is easy to check that \(f \circ \iota_2\) is an isomorphism \(\eta' \simeq (E,p)\).
 \end{proof}
 
 \begin{lemma}\label{lemma:global-sections-fg}
@@ -476,6 +531,63 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
   By \Cref{lemma:free-resolution}, there is a trivial bundle \((X \times \R^n, \pi_1)\) equipped with a vector bundle epimorphism onto \((E,p)\). This induces an \(R\)-module epimorphism \(\Gamma((X \times \R^n, \pi_1)) \twoheadrightarrow \Gamma((E,p))\). By \Cref{lemma:global-sections-trivial-fg}, \(\Gamma((X \times \R^n, \pi_1))\) is a free \(R\)-module of dimension \(n\), and the image of its basis in \(\Gamma((E,p))\) is a finite generating set for \(\Gamma((E,p))\).
 \end{proof}
 
+\begin{lemma}\label{lemma:global-sections-additive}
+  The global sections functor is additive.
+\end{lemma}
+
+\begin{proof}
+  \TODO(jesse)
+\end{proof}
+
+\begin{lemma}\label{lemma:global-sections-left-exact}
+  The global sections functor is left-exact.
+\end{lemma}
+
+\begin{proof}
+  \TODO(jesse)
+\end{proof}
+
+\begin{lemma}\label{lemma:global-sections-essentially-surjective-aux}
+  The global sections functor
+    \[\Gamma : \Vect(X) \longrightarrow \fgProj(X)\]
+  is essentially surjective on finitely-generated free modules.
+\end{lemma}
+
+\begin{proof}
+  Fix \(n\). One checks that for the rank-\(n\) trivial bundle \(F\), \(\Gamma(F) \simeq C(X)^n = R^n\). Since every finitely-generated free module is isomorphic to \(R^n\) for some \(n\), \(\Gamma\) is essentially surjective on finitely-generated free modules.
+\end{proof}
+
+\begin{lemma}\label{lemma:global-sections-essentially-surjective}
+  The global sections functor
+  \[\Gamma : \Vect(X) \longrightarrow \fgProj(X)\]
+  is essentially surjective.
+\end{lemma}
+\begin{proof}
+  Let \(P\) be a finitely-generated projective module. By \Cref{lemma:fg-projective-idempotent}, there exists a free module \(F\) of rank \(n\), and an idempotent \(e : F \to F\), such that \(P = e(F)\). By \Cref{lemma:global-sections-essentially-surjective-aux}, there exists a trivial rank \(n\) bundle \(\widetilde{F} \simeq (X \times \R^n, \pi_1)\) such that \(\Gamma(\widetilde{F}) \simeq F\). By \Cref{lemma:global-sections-full} and \Cref{lemma:global-sections-faithful}, \(e : F \to F\) lifts uniquely to a vector bundle endomorphism \(\widetilde{e} : \widetilde{F} \to \widetilde{F}\).
+
+  To finish the proof, it suffices to show that \(\Gamma(\im(\widetilde{e})) \simeq P\). To prove this, we first show that it suffices to show that \(\ker(\widetilde{e})\) is a subbundle of \(\widetilde{F}\). Suppose that \(\ker(\widetilde{e})\) is a subbundle. Then by \Cref{lemma:proposition-1}, \(\im(\widetilde{e})\) is also a subbundle, and so in \(\Vect(X)\) we have a split exact sequence
+  \[
+0 \to \ker(\widetilde{e}) \to \widetilde{F} \to \im(\widetilde{e}) \to 0.
+  \]
+  Since \(\Gamma\) is an additive functor \Cref{lemma:global-sections-additive}, applying \(\Gamma\) yields a split exact sequence in \(\fgProj(X)\):
+  \[
+0 \to \Gamma(\ker(\widetilde{e})) \to \Gamma(\widetilde{F}) \to \Gamma(\im(\widetilde{e})) \to 0.
+\]
+Since \(\Gamma\) is left-exact \Cref{lemma:global-sections-left-exact}, we have the following commutative diagram, where \(\Psi\) and \(\Phi\) are isomorphisms and the dashed arrow \(g\) is the composition \(\pi_2 \circ \Phi^{-1} \circ \sigma\):
+\[
+  \begin{tikzcd}
+    & \ker(e) \arrow[swap]{dd}{\Psi} \arrow{r}& F \arrow[swap]{dd}{\Phi} \arrow{r}{\pi_2} & \im(e) \arrow{rd}& \\
+  0 \arrow{ur} \arrow{dr}  & & & & 0\\
+    & \Gamma(\ker(\widetilde{e})) \arrow{r}& \Gamma(\ker(\widetilde{e})) \oplus \Gamma(\im(\widetilde{e})) \arrow{r} & \Gamma(\im(\widetilde{e})) \arrow[swap, shift right = 1ex]{l}{\sigma} \arrow[dashed]{uu}{g} \arrow{ru} & 
+  \end{tikzcd}
+\]
+One checks that \(g\) is inverted by the reverse composition, and is therefore an isomorphism: \(\im(\widetilde{e})\) is a lift for \(\im(e)\), as required.
+
+To show that \(\im(\widetilde{e})\) is a subbundle of \(\widetilde{F}\), we apply \Cref{lemma:proposition-1} to reduce this to showing that the dimensions of the fibers of \(\im(\widetilde{e})\) are locally constant. Let \(x : X\). Let \(h := \dim (\im(\widetilde{e})_x)\) and let \(k := \dim(\ker(\widetilde{e}))_x\). Since \(\widetilde{e}^2 = \widetilde{e}\), \(\ker(\widetilde{e}) = \im(\id - \widetilde{e})\). By applying \Cref{lemma:proposition-1-aux} to \(\im(\widetilde{e})\) and \(\im(\id - \widetilde{e})\), there exists a neighborhood \(U\) of \(x\) such that for all \(y \in U\), \(\dim(\im(\widetilde{e})_y \geq h\) and \(\dim(\ker(\widetilde{e})_y) \geq k\).
+
+Since \(\widetilde{F}\) is a trivial vector bundle of rank \(n\), we have that for all \(y \in U\), \(\dim(\widetilde{F}_y) = n\). Since we also have that \(\widetilde{F}_y \simeq \im(\widetilde{e})_y \oplus \ker(\widetilde{e})_y\), it follows that \(h + k = n\). Therefore, \(\dim(\im(\widetilde{e})_y = h\) and \(\dim(\ker(\widetilde{e})_y) = k\). We conclude that the rank of the fibers of \(\im(\widetilde{e})\) is locally constant.
+\end{proof}
+
 %TODO(jesse): maybe explicitly construct and name the inverse functor?
 \begin{theorem}[Swan, \cite{swan1962vector}] \label{thm:swan}
   The global sections functions induces an equivalence of categories
@@ -483,7 +595,7 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
 \end{theorem}
 
 \begin{proof}
-  \TODO(jesse)
+  By \Cref{lemma:global-sections-full}, \Cref{lemma:global-sections-faithful}, and \Cref{lemma:global-sections-essentially-surjective}, \(\Gamma\) is full, faithful, and essentially surjective, and is therefore an equivalence of categories.
 \end{proof}
 
 \section{Kaplansky's theorem on projective modules over local rings}
