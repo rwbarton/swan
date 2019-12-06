@@ -1,13 +1,13 @@
 \documentclass[11pt]{article}
- 
-\usepackage[margin=1in]{geometry} 
+
+\usepackage[margin=1in]{geometry}
 \usepackage{tikz-cd}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{amsmath,amsthm,amssymb,mathrsfs,mathabx}
 \usepackage{enumitem}
 \usepackage{csquotes}
-\usepackage{color} 
+\usepackage{color}
 \usepackage{parskip}
 \usepackage{hyperref}
 \usepackage{fixltx2e}
@@ -30,6 +30,7 @@
 \newcommand{\Mod}{\mhyphen\operatorname{Mod}}
 \newcommand{\wt}{\widetilde}
 \newcommand{\id}{\operatorname{id}}
+\newcommand{\mbf}{\mathbf}
 
 \theoremstyle{plain}
 \newtheorem{lemma}{Lemma}[section]
@@ -68,7 +69,7 @@
 \maketitle
 
 \begin{abstract}
-We give an account of Swan's theorem characterizing vector bundles over a compact Hausdorff space.
+We give an account of Swan's theorem on vector bundles over a compact Hausdorff space.
 \end{abstract}
 
 \section*{Introduction}
@@ -115,6 +116,14 @@ Throughout this section, we fix a topological space \(X\).
   Let \(Y\) be a topological space. We define the following property of \(Y\). We say that \(Y\) is \textbf{normal} if for every closed set \(V_1 \subseteq Y\) and every closed set \(V_2 \subseteq Y\), there exists an open neighborhood \(U_1 \supseteq V_1\) and an open neighborhood of \(U_2 \supseteq V_2\) such that \(U_1 \cap U_2 = \emptyset\).
 \end{definition}
 
+\begin{lemma}\label{lemma:compact-hausdorff-normal}
+  Let \(X\) be a space. If \(X\) is compact Hausdorff, then \(X\) is normal.
+\end{lemma}
+
+\begin{proof}
+  Fix \(V_1, V_2\) closed subsets of \(X\). For every \(x \in V_1\), and for all \(y \in V_2\), let \(U_{1,x,y}\) and \(U_{2,x,y}\) be the neighborhoods of \(x\) and \(y\) which witness Hausdorffness. The union \(\bigcup_{x,y} U_{1,x,y}\) forms an open cover of \(V_1\) which can be refined, by compactness, to a subcover indexed by (say) \((x_i, y_i)_{1 \leq i, j \leq n}\). For each \(x_i\) among \(x_1, \dots, x_n\), let \(W_i\) be the union \(\bigcup_{y} U_{1, x_i, y}\), which forms an open cover of \(V_2\). Then by construction, \(\bigcap_{1 \leq i \leq n} W_i\) and \(\bigcup_{1 \leq i,j \leq n} U_{1,x_i, y_j}\) are open neighborhoods of \(V_2\) and \(V_1\) that are disjoint.
+\end{proof}
+
 \begin{definition}\label{def:locally-finite-open-cover}
   Let \(\mathscr{U} := \{U_j\}_{j : J}\) be an open cover of \(X\). We define the following property of \(\mathscr{U}\). We say that \(\mathscr{U}\) is \textbf{locally finite} if for every \(x : X\), there exists a neighborhood \(U_x \ni x\) such that \(U_x\) meets only finitely many members of \(\mathscr{U}\).
 \end{definition}
@@ -123,21 +132,15 @@ Throughout this section, we fix a topological space \(X\).
   Let \(V_1\) and \(V_2\) be closed sets of \(X\). Let \(g : C(X)\). We define the following property of \(g\). We say that \textbf{\(g\) separates \(V_1\) and \(V_2\)} if \(g\) has constant value \(c_1\) on \(V_1\) and \(g\) has constant value \(c_2\) on \(V_2\), such that \(c_1 \neq c_2\).
 \end{definition}
 
-\begin{lemma}[Urysohn's lemma]\label{lemma:urysohn}
-  \(X\) is a normal space if and only if for every two disjoint closed sets \(V_1, V_2\), there exists a \(g : C(X)\) such that \(g\) separates \(V_1\) and \(V_2\).
-\end{lemma}
+The proofs of the next two lemmas can be found in Chapter 12 of Bredon \cite{bredon2013topology}. % TODO(jesse): come back to this
 
-\begin{proof}
-  \TODO(jesse)
-\end{proof}
+\begin{lemma}[Urysohn's lemma]\label{lemma:urysohn}
+  If \(X\) is a normal space, then for every two disjoint closed sets \(V_1, V_2\), there exists a \(g : C(X)\) such that \(g\) separates \(V_1\) and \(V_2\).
+\end{lemma}
 
 \begin{lemma} \label{lemma:subordinate-partition-of-unity}
   Suppose that \(X\) is normal. Let \(\mathscr{U} := \{U_j\}_{j : J}\) be a locally finite open cover of \(X\). Then there exists a partition of unity on \(X\) subordinate to \(\mathscr{U}\).
 \end{lemma}
-
-\begin{proof}
-  \TODO(jesse)
-\end{proof}
 
 \section{Vector bundles}
 For the rest of this document, we fix a compact Hausdorff space \(X\).
@@ -157,7 +160,7 @@ For the rest of this document, we fix a compact Hausdorff space \(X\).
 \begin{enumerate}[label={(\alph*)}]
   \item For every \(x : X\), the dimension of the vector space \(E_x\) is finite,
   \item \label{local-triviality} for every \(x : X\), \(\Phi_x\) is linear on every fiber, and satisfies \(p \circ \Phi_x = (\pi_1 : U_x \times \R^{n_x} \twoheadrightarrow U_x)\).
-\end{enumerate}  
+\end{enumerate}
 \end{definition}
 
 \begin{example}\label{example-trivial-bundle}
@@ -167,11 +170,11 @@ For the rest of this document, we fix a compact Hausdorff space \(X\).
   \]
 \end{example}
 
-\begin{example}\label{example-tangent-bundle}
-  Suppose that \(X\) additionally has the structure of a smooth manifold. The \textbf{tangent bundle} of \(X\) is defined as follows: the total space is sigma-type of all tangent spaces at all points of \(X\).
+% \begin{example}\label{example-tangent-bundle}
+%   Suppose that \(X\) additionally has the structure of a smooth manifold. The \textbf{tangent bundle} of \(X\) is defined as follows: the total space is sigma-type of all tangent spaces at all points of \(X\).
 
-  \TODO(jesse): describe the topology, smooth structure, etc.
-\end{example}
+%   \TODO(jesse): describe the topology, smooth structure, etc.
+% \end{example}
 
 \begin{definition}\label{def:rank}
   Let \(E \overset{p}{\to} X\) be a vector bundle. Let \(x : X\). The \textbf{rank of \(E\) at \(x\)} is the dimension of the vector space \(E_x\).
@@ -182,7 +185,7 @@ For the rest of this document, we fix a compact Hausdorff space \(X\).
 \end{lemma}
 
 \begin{proof}
-  \TODO(jesse).
+  This follows immediately from local triviality (the neighborhood \(V_{x}\) is given by fixing trivialization data).
 \end{proof}
 
 \begin{definition} \label{def:vector-bundle-homomorphism}
@@ -195,7 +198,7 @@ For the rest of this document, we fix a compact Hausdorff space \(X\).
 \end{definition}
 
 \begin{definition}\label{def:global-sections}
-  Let \(E \overset{p}{\to} X\) be a vector bundle over \(X\). The \textbf{global sections} of \(E\) are the set of continuous right-inverses to \(p\). We denote the global sections of \((E,p)\) by \(\Gamma((E,p))\).  
+  Let \(E \overset{p}{\to} X\) be a vector bundle over \(X\). The \textbf{global sections} of \(E\) are the set of continuous right-inverses to \(p\). We denote the global sections of \((E,p)\) by \(\Gamma((E,p))\).
 \end{definition}
 
 \begin{lemma}\label{lemma:global-sections-module}
@@ -231,7 +234,7 @@ For the rest of this document, we fix a compact Hausdorff space \(X\).
         \item Let \(c \in C(X)\). Then \[\Gamma(f)(c \cdot \sigma) = \lambda x, f \circ (c(x) \cdot \sigma(x)) = c(x) \cdot (f(\sigma(x))) = c \cdot \Gamma(\sigma).\]
       \end{itemize}
     \end{proof}
-  
+
 \end{definition}
 
 \begin{definition}\label{def:local-base}
@@ -337,7 +340,7 @@ Now we prove \Cref{lemma:covariant-hom-left-exact-2}.
       \[
         \begin{tikzcd}
          M \oplus N \arrow[two heads]{d}{\pi_1} \arrow[dashed]{r} & A \arrow[two heads]{d}{g} \\
-         M \arrow[bend left]{u}{\iota_1} \arrow[swap]{r}{f} & B  
+         M \arrow[bend left]{u}{\iota_1} \arrow[swap]{r}{f} & B
         \end{tikzcd}
       \]
       The horizontal lift of \(f \circ \pi_1\) along \(g\) exists because we can (in general) lift maps from free modules along surjections (determined up to a choice of where basis elements are sent).
@@ -393,7 +396,7 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
   Without loss of generality, we may assume that \(U\) trivializes \(E\) at \(x\), and thus that we are in the situation of having continuous functions
   \[s_1, \dots, s_k : U \to \R^n\]
   such that \(s_1(x), \dots, s_k(x)\) are linearly independent.
-  
+
   We identify \((s_1(x), \dots, s_k(x))\) with a linear transformation \(f_x : \R^k \to \R^n\). It suffices to show that there is a neighborhood \(V\) of \(x\) such that \(\mathbf{s} := (x \mapsto f_x)\) (which we claim is continuous) is injective on \(V\). Indeed, since \(f_x\) is continuous, there exists some left-inverse \(g\) of \(f_x\). Since the map
   \[(h \mapsto gh) : \Hom(\R^k, \R^n) \to \R\]
   is continuous, there exists a neighborhood \(V_0\) of \(f_x\) such that for every \(h \in V_0\), \(h\) is injective. Then we can take \(V = \mathbf{s}^{-1}(V_0)\).
@@ -403,15 +406,15 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
 \begin{lemma}[Proposition 1, \cite{swan1962vector}]\label{lemma:proposition-1}
   Let \(f : (E,p) \to (E',o')\) be a map of vector bundles over \(X\). Then the following are equivalent:
   \begin{enumerate}[label={(\alph*)}]
-  \item \label{lemma:proposition-1-1} \(\ker f\) is a subbundle of \((E,p)\). 
+  \item \label{lemma:proposition-1-1} \(\ker f\) is a subbundle of \((E,p)\).
   \item \label{lemma:proposition-1-2} The dimensions of the fibers of \(ker f\) are locally constant.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
   By \Cref{lemma:rank-locally-constant}, the rank of a bundle is locally constant, so by definition, \Cref{lemma:proposition-1-1} implies \Cref{lemma:proposition-1-2}. For the converse, we must exhibit trivialization data for \(\ker f\), so let \(x \in X\). We will obtain an open set \(U\) which trivializes \(\ker f\) at \(x\) as follows. Let \(n\) be the rank of \(E\) at \(x\). Since \((E,p)\) is a bundle, we can choose a local base \(\{s_1, \dots, s_n\}\) for \((E,p)\) at \(x\). There is a subset of these, say \(s_1, \dots, s_k\), such that \(f s_1, \dots, f s_k\) are a basis for \(\im(f)_{f(x)}\).
-  
+
   %Let \(t_1, \dots, t_n\) be a local base for \(E'\) at \(x\). By traversing the \(t_i\) and renumbering, we can assume that \(fs_1, \dots, fs_k, t_{k+1}, \dots, t_n\) are linearly independent at \(x\). Applying \Cref{lemma:1} and the fact that the rank of \(E'\) is locally constant, we conclude that \(fs_1, \dots, fs_k, t_{k+1}, \dots, t_n\) form a local base for \(E'\) at \(f(x)\).
-  
+
   It follows that there is a neighborhood \(U \ni x\) such that for all \(y \in U\), and for every \(i > k\), \(f \circ s_i(y) = \sum_{j = 1}^k a_{ij}(y) \cdot f \circ s_j(y).\) Then for every \(i\),
   \[\left( s_i'(y) := s_i(y) - \sum_{j = 1}^k a_{ij}(y)s_j(y) \right) : (\ker f)_y,\]
   and the $\{s'_{k+1}, \cdots, s'_{n}\}$ form a local base for \(\ker(f)\) near \(x\), as required.
@@ -427,11 +430,13 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
 
 
 \begin{lemma}[Proposition 2, \cite{swan1962vector}; Proposition 1.3, \cite{hatcher2003vector}] \label{lemma:proposition-2}
-  Any subbundle of a vector bundle \((E,p)\) over \(X\) is a direct summand.
+  Any subbundle \((E_0, p|_{E_0})\)of a vector bundle \((E,p)\) over \(X\) is a direct summand.
 \end{lemma}
 
-\begin{proof}
-  \TODO(jesse)
+\begin{proof} % TODO(jesse): come back and make this more detailed
+  An \emph{inner product} on \((E,p)\) is an inner product \(\langle -,- \rangle_x\) on each of the fibers \(E\) which varies continuously over the basepoint \(x\) (equivalently, one could rephrase this in terms of extra conditions on the triviality data requiring preservation of the inner product structure). We claim that it is sufficient to show that \((E,p)\) can be equipped with an inner product. Indeed, by taking fiberwise orthogonal projections, we obtain a vector bundle map \(\pi : (E, p) \twoheadrightarrow (E_0, p|_{E_0})\). Since \(\langle -,- \rangle_x\) varied continuously in \(x\), the dimensions of the fibers of \(\ker \pi = (E', p|_{E'})\) are locally constant, so by \Cref{lemma:proposition-1}, \((E', p|_{E'})\) is a vector subbundle of \((E,p)\); by construction, \((E_0, p_{E_0}) \oplus (E', p_{E'}) \simeq (E,p)\).
+
+  It remains to show that an inner product can always be constructed on \((E,p)\). This follows from \Cref{lemma:subordinate-partition-of-unity}: since \(X\) is compact Hausdorff, there exists a finite trivializing cover \(U_1, \dots, U_n\), such that over each \(U_i\), there is a \(k_i\) such that the pullback of \((E,p)\) along the inclusion \(U_i \hookrightarrow X\) is isomorphic to a trivial bundle of rank \(k_i\) (i.e. \(X \times \mathbb{R}^k\)). Fix an inner product \(\langle -,- \rangle_i\) on each \(\mathbb{R}^{k_i}\). Since \(X\) is compact Hausdorff, there exists a partition of unity \(g_1, \dots, g_n\) subordinate to \(U_1, \dots, U_n\). Then \(\langle -,- \rangle_x = \sum_{i \leq n} g_i(x) \langle -,- \rangle^0_{i}\) is an inner product on \((E,p)\).
 \end{proof}
 
 \begin{lemma}\label{lemma:global-sections-trivial-fg}
@@ -462,7 +467,11 @@ Throughout this section, \(R\) denotes \(C(X)\), the ring of continuous function
 \end{lemma}
 
 \begin{proof}
-  \TODO(jesse)
+  To see that \(\mathfrak{m}_x \Gamma((E,p)) \subseteq M_x(E)\), let \(c \cdot \rho\) be a basic member of \(\mathfrak{m}_x \Gamma((E,p))\). This obviously vanishes at \(x\) because \((c \cdot \rho)(x) = c(x) \cdot \rho(x)\) and \(c(x) = 0\) by assumption. Therefore it belongs to \(M_x(E)\). By linearity, all members of \(\mathfrak{m}_x \Gamma((E,p))\) belong to \(M_x(E)\).
+
+  To see that \(M_x(E) \subseteq \mathfrak{m}_x \Gamma((E,p))\), we must show that for an arbitrary global section \(\rho : X \to E\) which vanishes on \(X\), there exist finitely many \(c_1, \dots, c_n \in \mathfrak{m}_x\) and global sections \(\rho_1, \dots, \rho_n\) such that \(\rho = \sum_{0 \leq i \leq n} c_i \rho_i\). Let \(\rho_1, \dots, \rho_n\) be (global extensions, gotten by \Cref{lemma:section-extension}, of) a local base for \((E,p)\) at \(x\), so that near \(x\), there exist coordinate functions \(b_1, \dots, b_n\) such that \(\rho = \sum_i b_i \cdot \rho_i\). By applying \Cref{lemma:section-extension}, we can extend \(b_1, \dots, b_n\) to global coordinate functions \(b'_1, \dots, b'_n : X \to \mathbb{R}\) extending the \(b_i\). Then \(\sum b'_i \rho_i\) is a global section of \((E,p)\), and \(\rho - \sum b'_i \rho_i\) is a global section of \((E,p)\) which vanishes on a neighborhood \(U\) of \(x\). Since \(X\) is compact Hausdorff, by Urysohn's lemma \Cref{lemma:urysohn}, there exists a smaller neighborhood \(V \ni x\) such that \(\operatorname{cl}(V) \subseteq U\), and an interpolating function \(c : X \to \mathbb{R}\) such that \(c\) vanishes at \(x\) but is \(1\) on \(X \backslash V\).
+
+  Then \(\rho = c \cdot \left(\rho - \sum_i b'_i \rho_i \right) + \sum_i b'_i \rho_i\); all coefficient functions in this \(R\)-linear combination of global sections vanish at \(x\), as required.
 \end{proof}
 
 \begin{lemma}\label{lemma:localization-2}
@@ -536,7 +545,21 @@ is a sum of continuous functions in \(e'\).
 \end{lemma}
 
 \begin{proof}
-  \TODO(jesse)
+  Note that the initial object in \(\mathbf{Vect}(X)\) is the zero-dimensional trivial bundle over \(X\) (since \(0\) must be sent to \(0\) on all fibers). We must verify that:
+  \begin{enumerate}
+
+  \item \label{global-sections-preserves-zero} \(\Gamma(0) \simeq 0\), and
+  \item \label{global-sections-preserves-direct-sum} \(\Gamma(\mathbf{E}_1 \oplus \mathbf{E}_2) \simeq \Gamma(\mathbf{E}_1) \oplus \Gamma(\mathbf{E}_2)\).
+  \end{enumerate}
+
+  \begin{proof}[Proof of \Cref{global-sections-preserves-zero}]
+    Since the zero-dimensional trivial bundle over \(X\) is \(X \times \{0\} \simeq X\), there is a unique global section to \(X \times \{0\} \overset{\pi_1}{\twoheadrightarrow} X\), i.e. the constant map to \(0\). \(\Gamma(0) \simeq 0\), as required.
+  \end{proof}
+
+  \begin{proof}[Proof of \Cref{global-sections-preserves-direct-sum}]
+    This is essentially because in \(\mathbf{Vect}(X)\), direct sum is computed fiberwise. We construct the isomorphism as follows. Let \(\rho : X \to E_1 \oplus E_2\) be be a global section to \(\mathbf{E}_1 \oplus \mathbf{E}_2\). Let \(P_1 : \mathbf{E}_1 \oplus \mathbf{E}_2 \twoheadrightarrow \mathbf{E}_1\) and \(P_2 : \mathbf{E}_1 \oplus \mathbf{E}_2 \twoheadrightarrow \mathbf{E}_2\) be the canonical projections. Then since the map from the total space \(E_1 \oplus E_2 \to X\) is the direct sum of the maps \(p_1 : E_1 \to X\) and \(p_2 : E_2 \to X\), \(P_1 \circ \rho : X \to E_1\) is a global section to \(E_1\) (resp., \(P_2 \circ \rho\) is a global section to \(E_2\)). This yields a map \(F : \Gamma(\mathbf{E}_1 \oplus \mathbf{E}_2) \to \Gamma(\mathbf{E}_1) \oplus \Gamma(\mathbf{E}_2)\) which is easily seen to be a homomorphism of \(R\)-modules. It is injective: if \(F(\rho_1) = F(\rho_2)\), then by construction of \(F\) \(\rho_1\) and \(\rho_2\) are equal after projecting to either \(E_1\) or \(E_2\). It is surjective: for any pair of global sections \(\xi_1 \in \Gamma(\mathbf{E}_1), \xi_2 \in \Gamma(\mathbf{E}_2)\), the pointwise direct sum \((\xi_1, \xi_2) : X \to E_1 \oplus E_2\) is a global section to \(\mathbf{E}_1 \oplus \mathbf{E}_2\).
+
+  \end{proof}
 \end{proof}
 
 \begin{lemma}\label{lemma:global-sections-left-exact}
@@ -544,7 +567,9 @@ is a sum of continuous functions in \(e'\).
 \end{lemma}
 
 \begin{proof}
-  \TODO(jesse)
+  It suffices to show that there exists a vector bundle \(\mathbf{G}\) over \(X\) such that there is a natural isomorphism of functors \(\Gamma(-) \simeq \Hom_{\mathbf{Vect}(X)}(\mathbf{G}, -) \), from which the claim follows by the easily-checked general fact that covariant hom-functors $\mbf{C}(A, -)$ preserve small limits.
+
+  We use \(\mathbf{G} :=\) the trivial line bundle. The natural isomorphism is constructed as follows: given a vector bundle \((E,p)\), a global section entails a choice of a point \(y_x\) in \(E_x\) for every \(x \in X\). Then \(y_x \in \mathbb{R}^n\) induces a canonical map \(\mathbb{R}^1 \to \mathbb{R}^n\) by scalar multiplication. The totality of these maps yield a vector bundle map \(\mathbf{G} \to (E,p)\). Conversely, every vector bundle map \(\mathbf{G} \to (E,p)\) yields a global section of \((E,p)\) by the continuity of evaluating at \(1 \in \mathbb{R}\). This construction is easily checked to satisfy the required naturality diagram.
 \end{proof}
 
 \begin{lemma}\label{lemma:global-sections-essentially-surjective-aux}
@@ -569,16 +594,16 @@ is a sum of continuous functions in \(e'\).
   \[
 0 \to \ker(\widetilde{e}) \to \widetilde{F} \to \im(\widetilde{e}) \to 0.
   \]
-  Since \(\Gamma\) is an additive functor \Cref{lemma:global-sections-additive}, applying \(\Gamma\) yields a split exact sequence in \(\fgProj(X)\):
+  Since \(\Gamma\) is an additive functor by \Cref{lemma:global-sections-additive}, applying \(\Gamma\) yields a split exact sequence in \(\fgProj(X)\):
   \[
 0 \to \Gamma(\ker(\widetilde{e})) \to \Gamma(\widetilde{F}) \to \Gamma(\im(\widetilde{e})) \to 0.
 \]
-Since \(\Gamma\) is left-exact \Cref{lemma:global-sections-left-exact}, we have the following commutative diagram, where \(\Psi\) and \(\Phi\) are isomorphisms and the dashed arrow \(g\) is the composition \(\pi_2 \circ \Phi^{-1} \circ \sigma\):
+Since \(\Gamma\) is left-exact by \Cref{lemma:global-sections-left-exact}, we have the following commutative diagram, where \(\Psi\) and \(\Phi\) are isomorphisms and the dashed arrow \(g\) is the composition \(\pi_2 \circ \Phi^{-1} \circ \sigma\):
 \[
   \begin{tikzcd}
     & \ker(e) \arrow[swap]{dd}{\Psi} \arrow{r}& F \arrow[swap]{dd}{\Phi} \arrow{r}{\pi_2} & \im(e) \arrow{rd}& \\
   0 \arrow{ur} \arrow{dr}  & & & & 0\\
-    & \Gamma(\ker(\widetilde{e})) \arrow{r}& \Gamma(\ker(\widetilde{e})) \oplus \Gamma(\im(\widetilde{e})) \arrow{r} & \Gamma(\im(\widetilde{e})) \arrow[swap, shift right = 1ex]{l}{\sigma} \arrow[dashed]{uu}{g} \arrow{ru} & 
+    & \Gamma(\ker(\widetilde{e})) \arrow{r}& \Gamma(\ker(\widetilde{e})) \oplus \Gamma(\im(\widetilde{e})) \arrow{r} & \Gamma(\im(\widetilde{e})) \arrow[swap, shift right = 1ex]{l}{\sigma} \arrow[dashed]{uu}{g} \arrow{ru} &
   \end{tikzcd}
 \]
 One checks that \(g\) is inverted by the reverse composition, and is therefore an isomorphism: \(\im(\widetilde{e})\) is a lift for \(\im(e)\), as required.
@@ -598,25 +623,27 @@ Since \(\widetilde{F}\) is a trivial vector bundle of rank \(n\), we have that f
   By \Cref{lemma:global-sections-full}, \Cref{lemma:global-sections-faithful}, and \Cref{lemma:global-sections-essentially-surjective}, \(\Gamma\) is full, faithful, and essentially surjective, and is therefore an equivalence of categories.
 \end{proof}
 
-\section{Kaplansky's theorem on projective modules over local rings}
+% TODO(jesse): come back to this later
 
-\begin{definition}\label{def:local-ring}
-  Let \(R\) be a commutative ring. \(R\) is \textbf{local} if it has a unique maximal ideal.
-\end{definition}
+% \section{Kaplansky's theorem on projective modules over local rings}
 
-\begin{definition}\label{def:free-module}
-  Let \(R\) be a commutative ring. Let \(M\) be an \(R\)-module. \(M\) is \textbf{free} if \(M\) has a basis; equivalently, if \(M\) is isomorphic to a direct sum of copies of \(R\).
-\end{definition}
+% \begin{definition}\label{def:local-ring}
+%   Let \(R\) be a commutative ring. \(R\) is \textbf{local} if it has a unique maximal ideal.
+% \end{definition}
 
-\begin{theorem}[Kaplansky]\label{thm:kaplansky}
-  Let \(R\) be a local ring, and let \(M\) be a projective module over \(R\). Then \(M\) is free.
-\end{theorem}
+% \begin{definition}\label{def:free-module}
+%   Let \(R\) be a commutative ring. Let \(M\) be an \(R\)-module. \(M\) is \textbf{free} if \(M\) has a basis; equivalently, if \(M\) is isomorphic to a direct sum of copies of \(R\).
+% \end{definition}
 
-\begin{proof}
-  \TODO(jesse)
-\end{proof}
+% \begin{theorem}[Kaplansky]\label{thm:kaplansky}
+%   Let \(R\) be a local ring, and let \(M\) be a projective module over \(R\). Then \(M\) is free.
+% \end{theorem}
 
-\section{Internalizing Kaplansky's theorem to \(\Shv(X)\)}
+% \begin{proof}
+%   \TODO(jesse)
+% \end{proof}
+
+% \section{Internalizing Kaplansky's theorem to \(\Shv(X)\)}
 
 \bibliography{swan-notes}
 
