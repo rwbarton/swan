@@ -33,21 +33,21 @@ begin
       { rw mem_erase at H ⊢, rw mem_insert, from ⟨H.left, or.inr H.right⟩ }}
 end
 
-lemma sum_erase {a : α} (Ha : a ∈ s₁) : f a + sum (erase s₁ a) f = sum s₁ f :=
-begin
-  revert f a Ha, apply finset.induction_on s₁,
-    { tidy },
-    { intros a s H_new ih f a' Ha', rw mem_insert at Ha', cases Ha',
-      { subst Ha', simp[*, erase_insert] },
-      { specialize @ih f _ Ha', rw sum_insert ‹_›, rw ← ih,
-        have H_neq : a ≠ a',
-          by { intro H_eq, cc },
-        have : erase (insert a s) a' = insert a (erase s a'),
-          by exact erase_insert_eq_insert_erase H_neq ‹_›,
-        rw this, rw sum_insert _,
-          { simp },
-          { finish }}}
-end
+-- lemma sum_erase {a : α} (Ha : a ∈ s₁) : f a + sum (erase s₁ a) f = sum s₁ f :=
+-- begin
+--   revert f a Ha, apply finset.induction_on s₁,
+--     { tidy },
+--     { intros a s H_new ih f a' Ha', rw mem_insert at Ha', cases Ha',
+--       { subst Ha', simp[*, erase_insert] },
+--       { specialize @ih f _ Ha', rw sum_insert ‹_›, rw ← ih,
+--         have H_neq : a ≠ a',
+--           by { intro H_eq, cc },
+--         have : erase (insert a s) a' = insert a (erase s a'),
+--           by exact erase_insert_eq_insert_erase H_neq ‹_›,
+--         rw this, rw sum_insert _,
+--           { simp },
+--           { finish }}}
+-- end
 
 -- TODO: this compiles, but reformulate this in a way that avoids subtypes
 -- lemma sum_congr₂ (ϕ : (↑s₁ : set α) → (↑s₂ : set α')) (Hϕ : function.bijective ϕ) (H_eq : ∀ (x : (↑s₁ : set α)), f x = g (ϕ x)) : s₁.sum f = s₂.sum g :=
@@ -103,17 +103,16 @@ variables
   [topological_semiring α]
   [topological_semiring β]
 
-lemma continuous_eval₂ (ϕ : α → β) [is_semiring_hom ϕ] (p : mv_polynomial σ α) : continuous (λ v : σ → β, p.eval₂ ϕ v) :=
+lemma continuous_eval₂ (ϕ : α →+* β) [is_semiring_hom ϕ] (p : mv_polynomial σ α) : continuous (λ v : σ → β, p.eval₂ ϕ v) :=
 begin
   apply mv_polynomial.induction_on p; clear p,
     { intro a, simp [continuous_const] },
-    { intros p q Hp Hq, simp [continuous_add, *] },
-    { intros p v Hp, simp only [eval₂_mul, eval₂_X],
-      exact continuous_mul ‹_› (continuous_apply _) }
+    { intros p q Hp Hq, simp [continuous_add, *], continuity },
+    { intros p v Hp, simp only [eval₂_mul, eval₂_X], continuity }
 end
 
-lemma continuous_eval (p : mv_polynomial σ α) : continuous (λ v : σ → α, p.eval v) :=
-continuous_eval₂ id p
+lemma continuous_eval (p : mv_polynomial σ α) : continuous (λ v : σ → α, mv_polynomial.eval v p) :=
+continuous_eval₂ _ _
 
 end continuous_eval
 

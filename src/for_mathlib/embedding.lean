@@ -10,15 +10,6 @@ lemma discrete_of_singletons_open {t : topological_space α} (h : ∀ x, t.is_op
   discrete_topology α :=
 ⟨eq_bot_of_singletons_open h⟩
 
--- Any topology on a subsingleton is discrete.
-instance subsingleton.discrete_topology
-  {α : Type*} [topological_space α] [subsingleton α] :
-  discrete_topology α :=
-discrete_of_singletons_open $ λ x, begin
-  convert is_open_univ,
-  exact set.eq_univ_of_forall (λ y, set.mem_singleton_of_eq (subsingleton.elim _ _))
-end
-
 instance {α : Type*} [topological_space α] [subsingleton α] :
   unique (topological_space α) :=
 { default := ⊥,

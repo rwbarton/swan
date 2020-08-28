@@ -86,8 +86,7 @@ homeomorph.of_equiv_induced (equiv.sigma_equiv_prod B F)
 def trivial_family : family_of_spaces B :=
 { d := trivial_family_data B F,
   hp := begin
-    convert continuous_fst.comp (my_homeo B F).continuous,
-    exact funext (λ ⟨_, _⟩, rfl)
+    exact continuous_fst.comp (my_homeo B F).continuous
   end,
   hτF := λ b, (my_homeo B F).symm.embedding.comp (fiber_embedding B F b) }
 end trivial
@@ -109,19 +108,25 @@ def pullback : family_of_spaces B' :=
     -- That means the topology is induced by the maps E' → B', E' → E.
     τE := (by apply_instance : topological_space B').induced sigma.fst ⊓
           (by apply_instance : topological_space p.total_space).induced (λ z, ⟨φ z.1, z.2⟩) },
-  hp := continuous_iff_le_induced.mpr lattice.inf_le_left,
+  hp := begin
+          apply continuous_iff_le_induced.mpr, let A := _, let B := _, let C := _,
+          change A ⊓ B ≤ C, exact lattice.inf_le_left _ _ -- holy cannoli
+        end,
   hτF := λ b', begin
     split,
     { constructor,
       convert induced_inf.symm using 1,
       rw [induced_compose, induced_compose],
       refine eq.trans (p.hτF (φ b')).induced _,
-      refine (lattice.inf_of_le_right _).symm,
-      convert lattice.le_top,
+      let A := _, let B := _,
+      change B = A ⊓ B,
+      refine (inf_of_le_right _).symm,
+      convert le_top,
       convert induced_const,
       ext x,
-      exact eq.refl b' },
-    { apply injective_sigma_mk }
+      all_goals {sorry} -- TODO
+       },
+    { tidy } -- TODO
   end }
 
 end pullback
@@ -141,14 +146,14 @@ structure family_morphism :=
 
 def family_morphism.id : family_morphism p p :=
 { f := λ b, id,
-  hf := by { convert continuous_id, ext x, cases x, refl } }
+  hf := by { convert continuous_id, ext x, cases x, refl, refl } }
 
 variables {p p'} {p'' : family_of_spaces B}
 
 def family_morphism.comp (f : family_morphism p p') (g : family_morphism p' p'') :
   family_morphism p p'' :=
 { f := λ b, g.f b ∘ f.f b,
-  hf := by { convert g.hf.comp f.hf, ext x, cases x, refl } }
+  hf := by { convert g.hf.comp f.hf } }
 
 -- Should generalize this to arbitrary families of subspaces of fibers of a family
 -- (for example, also equalizer of two morphisms)
@@ -162,7 +167,7 @@ def family_morphism.range (f : family_morphism p p') : family_of_spaces B :=
     have : continuous (p'.p ∘ sigma.map id (λ b, subtype.val)), from
       p'.hp.comp (continuous_iff_le_induced.mpr (le_refl _)),
     swap,
-    convert this, ext x, cases x, refl
+    from ‹_›
   end,
   hτF := λ b, begin
     split,
@@ -173,7 +178,7 @@ def family_morphism.range (f : family_morphism p p') : family_of_spaces B :=
         family_of_spaces.F.topological_space] at ⊢ this,
       rw [this, induced_compose, induced_compose],
       refl },
-    { apply injective_sigma_mk }
+    { tidy }
   end }
 
 end morphism
