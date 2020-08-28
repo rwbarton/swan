@@ -63,7 +63,7 @@ structure fiber_bundle :=
 end fiber_bundle
 
 section vector_bundle
-variables {𝕜 : Type u} [discrete_field 𝕜] [topological_space 𝕜] {B : Type u} [topological_space B]
+variables {𝕜 : Type u} [field 𝕜] [topological_space 𝕜] {B : Type u} [topological_space B]
 
 local infix `|_`:70 := pullback_of_subset
 
